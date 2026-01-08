@@ -11,7 +11,7 @@ print(F.GREEN + "Processing started!")
 F.RESET
 
 def processing():
-
+    
     base_directory = Path(__file__).resolve().parent
     upload_directory = base_directory / "Upload"
     data_directory = base_directory / "Data"
@@ -27,7 +27,8 @@ def processing():
 
     else:
         
-        print("CSV files have been found!")
+        print(F.GREEN + "CSV files have been found!")
+        F.RESET
         s(0.5)
 
         for i, file in enumerate(data_csv, start=1):
