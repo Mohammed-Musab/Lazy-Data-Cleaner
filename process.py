@@ -7,11 +7,11 @@ from colorama import Fore as F, init
 
 init(autoreset=True)
 
-print(F.GREEN + "Processing started!")
-F.RESET
-
 def processing():
-    
+
+    print(F.YELLOW + "Processing started...")
+    F.RESET
+
     base_directory = Path(__file__).resolve().parent
     upload_directory = base_directory / "Upload"
     data_directory = base_directory / "Data"
@@ -32,9 +32,9 @@ def processing():
         s(0.5)
 
         for i, file in enumerate(data_csv, start=1):
-
+            data_directory.mkdir(exist_ok=True)
             df = pd.read_csv(file)
             new_name = data_directory / f"data_{i}.csv"
             df.to_csv(new_name, index=False)
             print(f"Processed a copy for file located in {new_name}")
-            s(0.1)
+            s(0.25)
