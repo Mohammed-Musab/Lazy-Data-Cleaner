@@ -18,7 +18,7 @@ Run the `setup.bat` **as administrator**, this will install the following:
 - colorama
 - pandas
 
-**Note**: all are **required** to run the app.
+**Note**: all are **required** to run the program.
 
 
 ## HOW TO RUN THE APP
