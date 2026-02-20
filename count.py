@@ -1,8 +1,6 @@
 """
-This should count:
+This should count in next update:
 
-- Null done
-- Columns done
 - Countable values
 - Uncountable values
 """
@@ -16,8 +14,6 @@ init(autoreset=True)
 
 
 def count(show, delete):
-
-    delete = delete
 
     print(F.YELLOW + "Counting started...")
     s(1)
@@ -39,8 +35,7 @@ def count(show, delete):
         print(F.GREEN + "CSV files have been found!")
         s(1)
 
-        for file in enumerate(data_csv, start=1):
-            
+        for file in data_csv:
             s(1)
 
             # Read current file
@@ -58,24 +53,29 @@ def count(show, delete):
             
             s(1)
  
+            # Calculating missing data percentage
             total_cells = df.size
             missing_cells = df.isnull().sum().sum()
             if missing_cells == 0:
                 precentage_na = 0.00
             else:
                 precentage_na = (missing_cells / total_cells) * 100
+            print(F.YELLOW + f"Missing data percentage per column: {precentage_na:.2f}%")
 
-            if precentage_na < 15 and delete == False:
+            # Droping missing data if either user allowed or the percentage of missing data is less than 15%
+            if precentage_na < 15 and delete == False and precentage_na > 0:
                 delete_comfirm = input(F.YELLOW + f"It is recommended to delete missing data since it is {precentage_na:.2f}%.. can system delete(Y/N)?").lower()
                 if delete_comfirm == "y":
                     delete = True
                 elif delete_comfirm == "n":
                     pass
                 else:
-                    print(F.RED + "Error: Invaild Input... System will countinue in older answer!")
+                    print(F.RED + f"Error: Invaild Input... System will countinue in older answer! {delete}")
             
             if delete:
                 df = df.dropna()
                 print(F.GREEN + "System deleted missing files!")
+            elif delete and precentage_na == 0:
+                print(F.GREEN + "No missing data!")
 
             s(1)
