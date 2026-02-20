@@ -25,7 +25,7 @@ Run the `setup.bat` **as administrator**, this will install the following:
 
 By double clicking (run) `run.bat` the program will run,
 
-**BUT** make sure you ran `setup.bat` when starting the program for the first time.
+**BUT** make sure you ran `SETUP/setup.bat` when starting the program for the first time.
 
 
 # License
