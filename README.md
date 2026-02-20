@@ -1,10 +1,34 @@
 # Lazy-Data-Cleaner
 A simple data cleaning code that can clean data for you with goal of having high accuracy and optimized functionality. 
 
-# Guide
-By double clicking (run) `run.bat` the program will run.
 
-## License
+# REQUIREMENTS
+
+64‑bit Windows 10/11
+
+
+# Guide
+
+
+## BEFORE YOU START...
+
+Run the `setup.bat` **as administrator**, this will install the following:
+
+- Python 3.11.9
+- colorama
+- pandas
+
+**Note**: all are **required** to run the app.
+
+
+## HOW TO RUN THE APP
+
+By double clicking (run) `run.bat` the program will run,
+
+**BUT** make sure you ran `setup.bat` when starting the program for the first time.
+
+
+# License
 This project is licensed under a **Personal Use Only License**.
 Modification, redistribution, forking, and commercial use are prohibited
 without explicit permission from the owner.
