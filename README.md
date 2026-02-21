@@ -17,6 +17,7 @@ Run the `setup.bat` **as administrator**, this will install the following:
 - Python 3.11.9
 - colorama
 - pandas
+- numpy
 
 **Note**: all are **required** to run the program.
 
