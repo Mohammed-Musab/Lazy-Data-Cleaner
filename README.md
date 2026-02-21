@@ -12,6 +12,7 @@ A simple data cleaning code that can clean data for you with goal of having high
 
 ## BEFORE YOU START...
 
+
 Run the `setup.bat` **as administrator**, this will install the following:
 
 - Python 3.11.9
@@ -20,6 +21,11 @@ Run the `setup.bat` **as administrator**, this will install the following:
 - numpy
 
 **Note**: all are **required** to run the program.
+
+
+## A guide of what the program will offer will come at release (due to everything not being final)
+
+**Take care !**
 
 
 ## HOW TO RUN THE APP
