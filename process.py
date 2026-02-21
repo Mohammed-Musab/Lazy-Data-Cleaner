@@ -10,12 +10,11 @@ init(autoreset=True)
 def processing():
 
     print(F.YELLOW + "Processing started...")
-    F.RESET
 
+    # Getting libraries
     base_directory = Path(__file__).resolve().parent
     upload_directory = base_directory / "Upload"
     data_directory = base_directory / "Data"
-
     data_csv = list(upload_directory.glob("*.csv"))
 
     # Check if there is files
@@ -25,10 +24,11 @@ def processing():
         print(F.RED + "Error: No CSV files have been found!")
         s(0.5)
 
+        return False
+
     else:
         
         print(F.GREEN + "CSV files have been found!")
-        F.RESET
         s(0.5)
 
         for i, file in enumerate(data_csv, start=1):
@@ -38,3 +38,5 @@ def processing():
             df.to_csv(new_name, index=False)
             print(f"Processed a copy for file located in {new_name}")
             s(0.25)
+        
+        return True
