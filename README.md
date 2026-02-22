@@ -15,7 +15,7 @@ A simple data cleaning code that can clean data for you with goal of having high
 
 Run the `setup.bat` **as administrator**, this will install the following:
 
-- Python 3.11.9
+- Python 3.11.9 or higher
 - colorama
 - pandas
 - numpy
