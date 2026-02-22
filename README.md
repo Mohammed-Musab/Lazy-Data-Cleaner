@@ -30,10 +30,9 @@ Run the `setup.bat` **as administrator**, this will install the following:
 
 ## HOW TO RUN THE APP
 
-By double clicking (run) `run.bat` the program will run,
+By double clicking (run) `run.bat` the program will run, and make sure you upload `.csv` file in the `Upload` folder!
 
 **BUT** make sure you ran `setup.bat` when starting the program for the first time.
-
 
 # License
 This project is licensed under a **Personal Use Only License**.
