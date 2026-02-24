@@ -15,7 +15,7 @@ Linux - in *theory* but you will have to run `display.py`
 ## BEFORE YOU START...
 
 
-Run the `setup.bat` **as administrator**, this will install the following:
+Install the following to be able to run the program:
 
 - Python 3.11.9 or higher
 - colorama
