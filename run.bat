@@ -1,6 +1,7 @@
 @echo off
-echo Running main.py...
-python main.py
+echo Running display.py...
+python display.py
 echo.
 echo Program finished.
+
 pause
