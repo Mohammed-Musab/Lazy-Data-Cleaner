@@ -22,14 +22,20 @@ def controlling():
 
         s(0.05)
     
-        # Start counting valuables
-        counting_valuables(data_csv)
-        return True, "Process have finished successfully!"
+        # Capture the return value from counting_valuables
+        result = counting_valuables(data_csv)
 
+        # If the result is None, it means counting have completed successfully without any issues
+        if result is None:
+            return True, "Counting completed."
+        
+        # If the result is not None, it means counting have completed but with some issues (like no .csv file found)
+        return result
+        
     else:
 
         # Notify user that processing have failed
-        print(F.RED + "Processing have failed!")
+        print(F.RED + "Processing have failed! (check the cmd for more details)")
 
         s(0.05)
 
