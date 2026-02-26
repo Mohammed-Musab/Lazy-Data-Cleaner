@@ -51,10 +51,9 @@ def processing():
             df.to_csv(new_name, index=False)
 
             # Inform user that system had processed a copy of the file
-            print(f"Processed a copy for file located in {new_name}")
-            
+            print(F.GREEN + f"Processed a copy for file located in {new_name}")
             copied_files.append(new_name)
-            print(f"Processed a copy for file located in {new_name}")
+
             s(0.01)
         
         return copied_files
