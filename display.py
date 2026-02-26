@@ -16,7 +16,9 @@ def run():
 
     # Grid the beta label and infer button
     beta_label.grid()
-    infer_button.grid()
+    restart_button.grid()
+    exit_button.grid()
+    run_button.destroy()
     
 # Displaying
 def displaying(informations):
@@ -26,7 +28,7 @@ def displaying(informations):
 def proceed():
     
     # Remove unneeded labels and buttons
-    beta_label,infer_button.destroy()
+    beta_label,restart_button,run_button.destroy()
 
     # Display either error or success message after controlling function have finished
     success, message = controlling()
@@ -36,7 +38,11 @@ def proceed():
     
     # Grid the restart button
     restart_button.grid()
-    
+
+# Exit function
+def exit_program():
+    root.destroy()
+
 # Create the main window
 root = tk.Tk()
 
@@ -57,9 +63,9 @@ beta_label = tk.Label(root,text=(f"This is a beta program it will be update"),fo
 
 # Buttons
 #  Proceed button:
-infer_button = tk.Button(root,text=f"if you want continue click me!!!",bg="black",command=proceed,fg="green")
+restart_button = tk.Button(root,text=f"If you want to restart program click me",bg="black",command=proceed,fg="green")
 #  Restart button
-restart_button = tk.Button(text="re-start system",command=proceed)
+exit_button = tk.Button(text="Exit the the program",command=exit_program)
 
 #  Run button
 run_button = tk.Button(root, text="RUN", font=("Arial", 40, "bold"), bg="blue", command=run)
