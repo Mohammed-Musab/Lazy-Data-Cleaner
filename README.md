@@ -33,6 +33,12 @@ Install the following to be able to run the program:
 
 By double clicking (run) `run.bat` the program will run, and make sure you upload `.csv` file in the `Upload` folder!
 
+Please **don't close the `cmd`** since it is acting as console (log).
+
+## HOW TO CHANGE SETTINGS?
+
+There are some settings that are just in the `count.py` file, you can change them.
+
 # License
 This project is licensed under a **Personal Use Only License**.
 Modification, redistribution, forking, and commercial use are prohibited
