@@ -7,7 +7,13 @@ def run():
     
     # Inform user that the system is running
     output_label.config(text="Running...",fg="black")
-    
+
+    # Display either error or success message after controlling function have finished
+    success, message = controlling()
+
+    # Display either error or success message after controlling function have finished
+    output_label.after(0, lambda: output_label.config(text=message, fg="green" if success else "red"))
+
     # Grid the beta label and infer button
     beta_label.grid()
     infer_button.grid()
