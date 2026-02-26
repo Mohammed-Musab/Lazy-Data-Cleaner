@@ -6,7 +6,7 @@ A simple data cleaning code that can clean data for you with goal of having high
 
 64‑bit Windows 10/11
 
-Linux - in *theory* but you will have to run `display.py`
+Linux - in *theory* but you will have to run `display.py` and that means losing `cmd / console` part of the code
 
 
 # Guide
