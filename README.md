@@ -1,45 +1,41 @@
-# Lazy-Data-Cleaner
-A simple data cleaning code that can clean data for you with goal of having high accuracy and optimized functionality. 
+# Lazy Data Cleaner
 
+A straightforward data cleaning tool designed to help you preprocess datasets with high accuracy and efficiency. It offers simple setup and execution, making data cleaning accessible even for beginners.
 
 # REQUIREMENTS
 
-64‑bit Windows 10/11
+64-bit Windows 10/11
 
-Linux - in *theory* but you will have to run `display.py` and that means losing `cmd / console` part of the code
+- Python 3.11 or higher
 
+- colorama library
 
-# Guide
+- pandas library
 
+- All are mandatory to run the program successfully.
 
-## BEFORE YOU START...
+# How to Run
 
+Double-click `run.bat` to start the application. Before running, place your `CSV` file into the upload folder. The script will process the uploaded file and display logs in the console window. Keep the console (`cmd`) open during operation.
 
-Install the following to be able to run the program:
+# Customizing Settings
 
-- Python 3.11.9 or higher
-- colorama
-- pandas
+Some configurable parameters are located in `count.py`. Edit that file to adjust data cleaning options or thresholds as needed.
 
-**Note**: all are **required** to run the program.
+# Additional Notes
 
+The program is in active development; features and workflows may evolve.
 
-## A guide of what the program will offer will come at release (due to everything not being final)
+The project is intended for **personal use**; modifications or redistribution are prohibited without permission.
 
-**Take care !**
+# Credits
 
+Thanks to the following members for helping develop the project:
 
-## HOW TO RUN THE APP
+- @Atesthecoder     ; for designing interface (**GUI**).
 
-By double clicking (run) `run.bat` the program will run, and make sure you upload `.csv` file in the `Upload` folder!
-
-Please **don't close the `cmd`** since it is acting as console (log).
-
-## HOW TO CHANGE SETTINGS?
-
-There are some settings that are just in the `count.py` file, you can change them.
+- @Qoyyuum          ; for testing the code and giving feedback.
 
 # License
-This project is licensed under a **Personal Use Only License**.
-Modification, redistribution, forking, and commercial use are prohibited
-without explicit permission from the owner.
+
+This project is licensed under a **Personal Use Only License**. Redistribution, modification, or commercial use is not permitted without explicit permission.
