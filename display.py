@@ -28,7 +28,9 @@ def displaying(informations):
 def proceed():
     
     # Remove unneeded labels and buttons
-    beta_label,restart_button,run_button.destroy()
+    beta_label.destroy()
+    restart_button.destroy()
+    run_button.destroy()
 
     # Display either error or success message after controlling function have finished
     success, message = controlling()
@@ -56,7 +58,7 @@ root.resizable(False, False)
 # Labels
 #  Output label
 output_label = tk.Label(root, text="OUTPUT", font=("Arial", 18, "bold"), fg="black")
-output_label.grid()
+
 #  Beta informing label
 beta_label = tk.Label(root,text=(f"This is a beta program it will be update"),font=("Arial", 18, "bold"), fg="green",)
 
@@ -66,10 +68,12 @@ beta_label = tk.Label(root,text=(f"This is a beta program it will be update"),fo
 restart_button = tk.Button(root,text=f"If you want to restart program click me",bg="black",command=proceed,fg="green")
 #  Restart button
 exit_button = tk.Button(text="Exit the the program",command=exit_program)
-
 #  Run button
-run_button = tk.Button(root, text="RUN", font=("Arial", 40, "bold"), bg="blue", command=run)
+run_button = tk.Button(root, text="RUN", font=("Arial", 40, "bold"), bg="green", command=run)
+
+# Grid the run button and output label
 run_button.grid()
+output_label.grid()
 
 # Main frame and main loop
 mainframe = tk.Frame(root)
