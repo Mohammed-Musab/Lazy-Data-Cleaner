@@ -32,9 +32,9 @@ The project is intended for **personal use**; modifications or redistribution ar
 
 Thanks to the following members for helping develop the project:
 
-- @Atesthecoder     ; for designing interface (**GUI**).
+- @Atesthecoder ; for designing interface (**GUI**).
 
-- @Qoyyuum          ; for testing the code and giving feedback.
+- @Qoyyuum ; for testing the code and giving feedback.
 
 # License
 
