@@ -26,7 +26,7 @@ def processing():
         print(F.RED + "Error: No CSV files have been found!")
         s(0.5)
 
-        return None
+        return False
 
     # Procced if the system had found a .csv file(s)
     else:
@@ -56,4 +56,4 @@ def processing():
 
             s(0.01)
         
-        return copied_files
+        return True
