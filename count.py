@@ -30,7 +30,7 @@ def counting_valuables():
     data_csv = list(data_directory.glob("*.csv"))
 
     # Defualt Values, note that those values will be edittied by check list in future update
-    defualt_threshold   = 07.50         # Defualt value for missing data percentage to decide whether to delete or not
+    defualt_threshold   = 02.50         # Defualt value for missing data percentage to decide whether to delete or not
     show_infomations    = True          # Defualt value for displaying information
     delete_data         = False         # Defualt value for deleting data
     fill_mode           = True          # Defualt value for filling in categorical columns missing data with mode
@@ -208,3 +208,4 @@ def counting_valuables():
             
             return False, "SYSTEM ERROR: Invalid filling method."
             break
+
