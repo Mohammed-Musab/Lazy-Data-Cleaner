@@ -12,7 +12,7 @@ A straightforward data cleaning tool designed to help you preprocess datasets wi
 
 - pandas library
 
-- All are mandatory to run the program successfully.
+All are **mandatory** to run the program successfully.
 
 # How to Run
 
