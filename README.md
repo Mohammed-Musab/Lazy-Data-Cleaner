@@ -6,7 +6,7 @@ A straightforward data cleaning tool designed to help you preprocess datasets wi
 
 64-bit Windows 10/11
 
-- Python 3.11 or higher
+- Python 3.13 or higher
 
 - colorama library
 
