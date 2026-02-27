@@ -12,18 +12,22 @@ init(autoreset=True)
 def controlling():
 
     # Get the data from processing function
-    data_csv = processing()
+    file_found = processing()
+
+    # Getting path
+    base_directory = Path(__file__).resolve().parent
+    data_directory = base_directory / "Data"
+    data_csv = list(data_directory.glob("*.csv"))
 
     # Process the files and make copies of them in Data folder
-    if data_csv:
+    if file_found:
 
         # Notify user that processing have finished
         print(F.GREEN + "Processing have finished!")
 
         s(0.05)
-    
-        # Capture the return value from counting_valuables
-        result = counting_valuables(data_csv)
+
+        result = counting_valuables()
 
         # If the result is None, it means counting have completed successfully without any issues
         if result is None:
