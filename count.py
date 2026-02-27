@@ -37,8 +37,8 @@ def counting_valuables():
     safe_guard_fill     = False         # Don't Change unless testing
 
     # Please don't have more than one set to True
-    fill_mean           = True          # Defualt value for filling in numerical columns missing data with mean
-    fill_medium         = False         # Defualt value for filling in numerical columns missing data with medium
+    fill_mean           = False         # Defualt value for filling in numerical columns missing data with mean
+    fill_medium         = True          # Defualt value for filling in numerical columns missing data with medium
     fill_skip           = False         # Defualt value for skipping filling in missing data
 
     # Fill in mode for categorical data will be mode of the column unless fill_skip is True
@@ -208,4 +208,5 @@ def counting_valuables():
             
             return False, "SYSTEM ERROR: Invalid filling method."
             break
+
 
