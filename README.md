@@ -21,9 +21,13 @@ All are **mandatory** to run the program successfully.
 # How to Run
 
 Double-click `run.bat` to start the application. Before running, place your `CSV` file into the `Upload` folder and the results will come in the `Data` folder.
+
 The script will process the uploaded file and display logs in the console window. Keep the console (`cmd`) open during operation.
 
+# About Files Processing
+
 Please note that the program **doesn't** edit or delete files in `Upload` folder.
+
 All are copied and editted in `Data` folder.
 
 # Customizing Settings
