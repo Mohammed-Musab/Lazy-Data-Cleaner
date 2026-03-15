@@ -120,9 +120,9 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to the following contributors:
 
-- **@Atesthecoder** - for designing interface (**GUI**).
+- **@Atesthecoder** - for designing interface the **BETA first GUI**.
 
-- **@Qoyyuum** - for testing the code and giving feedback.
+- **@Qoyyuum** - for testing the code and giving feedback throught the journey.
 
 # License
 
