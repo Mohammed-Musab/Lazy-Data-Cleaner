@@ -257,17 +257,21 @@ class LazyDataCleaner():
         # Remove returned button
         self.return_button.place_forget()
 
-        # Inform User That Program Finished Running
-        self.output_label.config(text="The Program Finish Sucessfully!",fg="green")
-
-        # Main Function
-        self.main_function(self.preset)
-
         # Display
         self.output_label.grid(row=1, sticky="ew")
         self.restart_button.grid(row=2, sticky="ew")
         self.exit_button.grid(row=3, sticky="ew")
         self.root.update()
+
+        # Inform User That Program Started Running
+        self.output_label.config(text="Processing...", fg="orange")
+        self.root.update()
+
+        # Main Function
+        self.main_function(self.preset)
+
+        # Inform User That Program Finished Running
+        self.output_label.config(text="The Program Finish Sucessfully!",fg="green")
 
     def rerun(self):
         # Clear Frame
@@ -331,8 +335,8 @@ class LazyDataCleaner():
         success_process_csv, message_process_csv = process_files_csv()
 
         # Getting Paths
-        base_directory = Path(__file__).resolve().parent
-        upload_directory = base_directory / "Upload"
+        base_directory = Path(__file__).resolve().parent.parent
+        upload_directory = base_directory / "Data"
         data_csv = list(upload_directory.glob("*.csv"))
 
         # If no errors
