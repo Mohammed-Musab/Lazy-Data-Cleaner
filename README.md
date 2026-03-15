@@ -48,6 +48,22 @@ Instead:
 
 This ensures your original data always remains unchanged.
 
+# Here Are Images of the Program
+
+## Starting Screen Screen
+
+![](Images/Main_Screen.png)
+
+## Settings Screen
+
+![](Images/Settings_Screen.png)
+
+## Main Screen
+
+![](Images/Main_2_Screen.png)
+
+**All Screens are accessable.**
+
 # Cleaning Presets
 
 At the moment, the program provides **five cleaning presets**:
@@ -104,9 +120,9 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to the following contributors:
 
-- @Atesthecoder - for designing interface (**GUI**).
+- **@Atesthecoder** - for designing interface (**GUI**).
 
-- @Qoyyuum - for testing the code and giving feedback.
+- **@Qoyyuum** - for testing the code and giving feedback.
 
 # License
 
