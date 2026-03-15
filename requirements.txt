@@ -1,0 +1,13 @@
+# REQUIREMENTS
+
+- Operating System: Windows
+
+- Python: 3.13 or higher
+
+## Libraries Required
+
+- Colorama
+
+- pandas
+
+- numpy
