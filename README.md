@@ -1,61 +1,123 @@
 # Lazy Data Cleaner
 
-A straightforward data cleaning tool designed to help you preprocess datasets with high accuracy and efficiency. It offers simple setup and execution, making data cleaning accessible even for beginners.
+**Lazy Data Cleaner** is a simple data cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic data cleaning accessible even for beginners.
 
-Right now the only datasets that it cleans are `.csv` files.
+**Currently,** the program supports cleaning `.csv` datasets only.
 
 # REQUIREMENTS
 
-64-bit Windows 10/11
+- **Operating System:** Windows
 
-- Python 3.13 or higher
+- **Python:** 3.13 or higher
 
-- Colorama library
+## Libraries Required
 
-- pandas library
+- Colorama
 
-- numpy library
+- pandas
 
-All are **mandatory** to run the program successfully.
+- numpy
+
+All dependencies are **mandatory** to run the program successfully.
 
 # How to Run
 
-Double-click `run.bat` to start the application. Before running, place your `CSV` file into the `Upload` folder and the results will come in the `Data` folder.
+1. Place your `.csv` file inside the **`Upload`** folder.
 
-The script will process the uploaded file and display logs in the console window. Keep the console (`cmd`) open during operation.
+2. Double-click **`run.bat`** to start the application.
+
+3. The program will process the dataset.
+
+4. The cleaned dataset will appear in the **`Data`** folder.
+
+The console window (**`cmd`**) will display processing logs.
+
+**Do not close the console while the program is running.**
 
 # About Files Processing
 
-Please note that the program **doesn't** edit or delete files in `Upload` folder.
+The program **never modifies or deletes** files located in the **`Upload`** folder.
 
-All are copied and editted in `Data` folder.
+Instead:
 
-# Customizing Settings
+- Files are **copied**
 
-Configurable parameters are being worked on but for now there are 5 presets:
+- Cleaning operations are performed on the **copied version**
 
-- Default   (fill in the mean, fill in the mode, remove outlier, and remove duplicates)
-- AI        (fill in the median, fill in the mode, remove outlier, remove duplicates and apply standardization)
-- Business  (fill in the mode and remove duplicates)
-- Streaming (fill in the mode, remove outlier, and remove duplicates)
-- Custom    (redirected to the default preset for now)
+- Results are saved inside the **`Data`** folder
 
-Please note that a custom settings menu will come in version `v0.4.2-PRERELEASE` 
+This ensures your original data always remains unchanged.
 
-# Additional Notes
+# Cleaning Presets
 
-The program is in active development; features and workflows may evolve.
+At the moment, the program provides **five cleaning presets**:
 
-The project is intended for **personal use**; modifications or redistribution are prohibited without permission.
+## Default   
+
+- Fill in the **mean**.
+  
+- Fill in the **mode**.
+
+- Remove **outlier**.
+  
+- Remove **duplicates**.
+
+## AI
+
+- Fill in the **median**.
+
+- Fill in the **mode**.
+
+- Remove **outlier**.
+
+- Remove **duplicates**.
+
+- Apply **standardization**.
+
+## Business
+
+- Fill in the **mode**.
+
+- Remove **duplicates**.
+
+## Streaming 
+ 
+- Fill in the **mode**.
+
+-  Remove **outlier**.
+  
+-  Remove **duplicates**.
+
+## Custom
+
+Currently redirects to the **Default preset.**
+
+A **custom configuration menu** is planned for `v0.4.2-PRERELEASE` 
+
+# Development Status
+
+The project is currently under **active development.**
+
+Features, presets, and workflows may change in future releases.
 
 # Credits
 
-Thanks to the following members for helping develop the project:
+Special thanks to the following contributors:
 
-- @Atesthecoder; for designing interface (**GUI**).
+- @Atesthecoder - for designing interface (**GUI**).
 
-- @Qoyyuum; for testing the code and giving feedback.
+- @Qoyyuum - for testing the code and giving feedback.
 
 # License
 
-This project is licensed under a **Personal Use Only License**. Redistribution, modification, or commercial use is not permitted without explicit permission.
+This project is licensed under a **Personal Use Only License**.
+
+You **may not:**
+
+- Redistribution the project
+
+- Modification the source code
+
+- Use the software commercially
+
+without **explicit permission from the author.**
