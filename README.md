@@ -79,8 +79,6 @@ At the moment, the program provides **five cleaning presets**:
 - Fill in the **mean**.
   
 - Fill in the **mode**.
-
-- Remove **outlier**.
   
 - Remove **duplicates**.
 
