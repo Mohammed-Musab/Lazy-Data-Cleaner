@@ -12,13 +12,17 @@
 
 ## Libraries Required
 
-- Colorama
+- Colorama (0.4.6)
 
-- pandas
+- pandas (2.3.1)
 
-- numpy
+- numpy (2.4.2)
 
 All dependencies are **mandatory** to run the program successfully.
+
+You can install them by using this:
+
+`py -m pip install -r requirements.txt`
 
 # How to Run
 
