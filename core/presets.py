@@ -10,7 +10,6 @@ def default(data_csv):
 
     fill_mean(True, 2, data_csv)
     fill_mode(True, 2, data_csv)
-    outlier(data_csv)
     duplicate(data_csv)
 
 # AI preset
