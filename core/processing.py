@@ -4,13 +4,6 @@ from pathlib import Path
 from colorama import Fore as F, init
 from datetime import datetime
 
-"""
-DEV NOTE:
-
-Progress bar & Estimate time are coming in v0.4.2-prerelease!
-Send help...
-"""
-
 # Get Current Time
 current_time = datetime.now().strftime("%H:%M:%S")
 # Reset Colorama
