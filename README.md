@@ -20,6 +20,10 @@
 
 All dependencies are **mandatory** to run the program successfully.
 
+You can install them by using this:
+
+`py -m pip install -r requirements.txt`
+
 # How to Run
 
 1. Place your `.csv` file inside the **`Upload`** folder.
