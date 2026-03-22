@@ -12,13 +12,7 @@
 
 ## Libraries Required
 
-- Colorama (0.4.6)
-
-- pandas (2.3.1)
-
-- numpy (2.4.2)
-
-- scripy (1.16.0)
+- Check `requirements.txt`.
 
 All dependencies are **mandatory** to run the program successfully.
 
@@ -75,10 +69,6 @@ This ensures your original data always remains unchanged.
 At the moment, the program provides **five cleaning presets**:
 
 ## Default   
-
-- Fill in the **mean**.
-  
-- Fill in the **mode**.
   
 - Remove **duplicates**.
 
