@@ -110,9 +110,9 @@ At the moment, the program provides **five cleaning presets**:
 
 ## Custom
 
-Currently redirects to the **Default preset.**
+A **custom configuration menu** appears after selecting the button and by pressing any option you can choose what dateset cleaning methods you want
 
-A **custom configuration menu** is planned for `v0.4.2-PRERELEASE` 
+**CUSTOMIZABLE THREADHOLD** isn't coming yet.
 
 # Development Status
 
