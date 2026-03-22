@@ -47,6 +47,9 @@ class LazyDataCleaner():
         # Main Screen
         self.main_screen()
     
+    def get_time(self):
+        return self.datetime.now().strftime("%H:%M:%S")
+    
     def create_widgets(self):
         # Defualt Values For Buttons & Labels Size
         button_width            = 40
@@ -364,7 +367,8 @@ class LazyDataCleaner():
                 self.mean = 0
                 self.customize_button_mean.config(bg="#3d0000")
             else:
-                print(F.RED + f"[{self.current_time}] Error In Selection Changing To False")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 2:
             if self.median == 0:
                 self.median = 1
@@ -373,7 +377,8 @@ class LazyDataCleaner():
                 self.median = 0
                 self.customize_button_median.config(bg="#3d0000")
             else:
-                print(F.RED + f"[{self.current_time}] Error In Selection Changing To False")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 3:
             if self.mode == 0:
                 self.mode = 1
@@ -382,7 +387,8 @@ class LazyDataCleaner():
                 self.mode = 0
                 self.customize_button_mode.config(bg="#3d0000")
             else:
-                print(F.RED + f"[{self.current_time}] Error In Selection Changing To False")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 4:
             if self.duplicates == 0:
                 self.duplicates = 1
@@ -391,7 +397,8 @@ class LazyDataCleaner():
                 self.duplicates = 0
                 self.customize_button_duplicates.config(bg="#3d0000")
             else:
-                print(F.RED + f"[{self.current_time}] Error In Selection Changing To False")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 5:
             if self.outlier == 0:
                 self.outlier = 1
@@ -400,7 +407,8 @@ class LazyDataCleaner():
                 self.outlier = 0
                 self.customize_button_outlier.config(bg="#3d0000")
             else:
-                print(F.RED + f"[{self.current_time}] Error In Selection Changing To False")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 6:
             if self.standardizations == 0:
                 self.standardizations = 1
@@ -409,7 +417,8 @@ class LazyDataCleaner():
                 self.standardizations = 0
                 self.customize_button_standardization.config(bg="#3d0000")
             else:
-                print(F.RED + f"[{self.current_time}] Error In Selection Changing To False")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
 
         # Update The Screen
         self.root.update()
@@ -611,14 +620,16 @@ class LazyDataCleaner():
                     step_done()
                 
             else:
-                print(F.RED + f"[{self.current_time}] Error In Presets Selection... Switching to Defualt")
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Presets Selection... Switching to Defualt")
                 default(data_csv)
                 self.step = 1
                 step_done()
 
         else: 
             # Print Current Time & The Errror Message 
-            print(F.RED + f"[{self.current_time}] {message_process_csv}")
+            self.get_time()
+            print(F.RED + f"[{self.get_time()}] {message_process_csv}")
             self.step = 1
             step_done()
 
