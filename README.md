@@ -18,6 +18,8 @@
 
 - numpy (2.4.2)
 
+- scripy (1.16.0)
+
 All dependencies are **mandatory** to run the program successfully.
 
 You can install them by using this:
