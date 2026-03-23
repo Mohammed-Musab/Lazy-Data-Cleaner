@@ -10,6 +10,9 @@ current_time = datetime.now().strftime("%H:%M:%S")
 # Reset Colorama
 init(autoreset=True)
 
+def get_time():
+    return datetime.now().strftime("%H:%M:%S")
+
 # Standardization
 def standardization(data_csv):
     for file in data_csv:
@@ -27,7 +30,7 @@ def standardization(data_csv):
         df.to_csv(file, index=False)
 
         # Infrom user that standardization have finished
-        print(F.GREEN + f"[{current_time}] Applied standardization for '{file}'.")
+        print(F.GREEN + f"[{get_time()}] Applied standardization for '{file}'.")
 
 # Outlier
 def outlier(data_csv):
@@ -47,26 +50,49 @@ def outlier(data_csv):
         df_clean = df[(z_scores < threshold).all(axis=1)]
 
         # Save file
-        df_clean.to_csv(file)
+        df_clean.to_csv(file, index=False)
 
         # Infrom user that outlier have been removed
-        print(F.GREEN + f"[{current_time}] Removed outliers for '{file}'.")
+        print(F.GREEN + f"[{get_time()}] Removed outliers for '{file}'.")
 
 # Duplicates
 def duplicate(data_csv):
     for file in data_csv:
 
-        # Read file
         df = pd.read_csv(file)
 
-        # Remove duplicates
-        df_clean = df.drop_duplicates()
+        initial_count = len(df)
+        df.drop_duplicates(inplace=True)
+        if len(df) < initial_count:
+            print(F.YELLOW + f"[{get_time()}] Removed {initial_count - len(df)} exact duplicate rows.")
 
-        # Save file
-        df_clean.to_csv(file)
+        if not df.empty:
+            indexs = df.index.astype(str).tolist()
+            normalized = {}
+            to_remove = []
 
-        # Infrom user that duplicates rows have been removed
-        print(F.GREEN + f"[{current_time}] Removed duplicate rows for '{file}'.")
+            for index_label in indexs:
+                # Correct Format
+                normal = index_label.lower().strip().replace(" ", "_").replace("-", "_")
+
+                if normal in normalized:
+                    main_index = normalized[normal]
+                    # Inform User That Column Will Be Merged
+                    print(F.RED + f"[{get_time()}] Duplicate Detected: '{index_label}' looks like '{main_index}'")
+                    df.loc[main_index] = df.loc[main_index].combine_first(df[index_label])
+                    to_remove.append(index_label)
+                    print(F.YELLOW + f"[{get_time()}] Merged '{index_label}' into '{main_index}'")
+                else:
+                    normalized[normal] = index_label
+
+            # Delete the redundant columns
+            if to_remove:
+                df.drop(index=to_remove, inplace=True)
+            
+            df.reset_index(inplace=True)
+            
+        df.to_csv(file, index=False)
+        print(F.GREEN + f"[{get_time()}] Finished Removing Duplicates")
 
 # Fill in missing data with mean
 def fill_mean(delete, na_threshold, data_csv):
@@ -85,20 +111,20 @@ def fill_mean(delete, na_threshold, data_csv):
 
             # Check if there is no missing data
             if na_precentage == 0:
-                print(F.YELLOW + f"[{current_time}] No missing data for {column}")
+                print(F.YELLOW + f"[{get_time()}] No missing data for {column}")
 
             # If prcentage of missing data is less than missing data threshold and user allowed deleting data, drop missing rows
             elif na_threshold >= na_precentage and delete:
                 df = df.dropna(subset=[column])
-                print(F.GREEN + f"[{current_time}] Dropped missing data for {column}.")
+                print(F.GREEN + f"[{get_time()}] Dropped missing data for {column}.")
 
             # If prcentage of missing data is greater than missing data threshold, fill in missing data
             elif na_threshold <= na_precentage:
                 df[column] = df[column].fillna(df[column].mean())
-                print(F.GREEN + f"[{current_time}] Missing data in column {column} filled with mean.")
+                print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with mean.")
         
         # Save File
-        df.to_csv(file)
+        df.to_csv(file, index=False)
 
 # Fill in missing data with median
 def fill_median(delete, na_threshold, data_csv):
@@ -117,20 +143,20 @@ def fill_median(delete, na_threshold, data_csv):
 
             # Check if there is no missing data
             if na_precentage == 0:
-                print(F.YELLOW + f"[{current_time}] No missing data for {column}")
+                print(F.YELLOW + f"[{get_time()}] No missing data for {column}")
 
             # If prcentage of missing data is less than missing data threshold and user allowed deleting data, drop missing rows
             elif na_threshold >= na_precentage and delete:
                 df = df.dropna(subset=[column])
-                print(F.GREEN + f"[{current_time}] Dropped missing data for {column}.")
+                print(F.GREEN + f"[{get_time()}] Dropped missing data for {column}.")
 
             # If prcentage of missing data is greater than missing data threshold, fill in missing data
             elif na_threshold <= na_precentage:
                 df[column] = df[column].fillna(df[column].median())
-                print(F.GREEN + f"[{current_time}] Missing data in column {column} filled with median.")
+                print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with median.")
         
         # Save File
-        df.to_csv(file)
+        df.to_csv(file, index=False)
 
 # Fill in missing data with mode
 def fill_mode(delete, na_threshold, data_csv):
@@ -149,17 +175,17 @@ def fill_mode(delete, na_threshold, data_csv):
 
             # Check if there is no missing data
             if na_precentage == 0:
-                print(F.YELLOW + f"[{current_time}] No missing data for {column}")
+                print(F.YELLOW + f"[{get_time()}] No missing data for {column}")
 
             # If prcentage of missing data is less than missing data threshold and user allowed deleting data, drop missing rows
             elif na_threshold >= na_precentage and delete:
                 df = df.dropna(subset=[column])
-                print(F.GREEN + f"[{current_time}] Dropped missing data for {column}.")
+                print(F.GREEN + f"[{get_time()}] Dropped missing data for {column}.")
 
             # If prcentage of missing data is greater than missing data threshold, fill in missing data 
             elif na_threshold <= na_precentage:
                 df[column] = df[column].fillna(df[column].mode()[0])
-                print(F.GREEN + f"[{current_time}] Missing data in column {column} filled with mode.")
+                print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with mode.")
 
         # Save file
-        df.to_csv(file)
+        df.to_csv(file, index=False)
