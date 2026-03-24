@@ -1,10 +1,8 @@
 # Lazy Data Cleaner
 
-**Lazy Data Cleaner** is a simple dataset cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic dataset cleaning accessible even for beginners.
+**Lazy Data Cleaner** is a simple data cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic data cleaning accessible even for beginners.
 
-**Currently,** the program supports cleaning `.csv` datasets only,
-
-`.xlxs` support is planned.
+**Currently,** the program supports cleaning `.csv` datasets only.
 
 # REQUIREMENTS
 
@@ -14,13 +12,19 @@
 
 ## Libraries Required
 
-- Colorama
+- Colorama (0.4.6)
 
-- pandas
+- pandas (2.3.1)
 
-- numpy
+- numpy (2.4.2)
+
+- scripy (1.16.0)
 
 All dependencies are **mandatory** to run the program successfully.
+
+You can install them by using this:
+
+`py -m pip install -r requirements.txt`
 
 # How to Run
 
@@ -52,13 +56,17 @@ This ensures your original data always remains unchanged.
 
 # Here Are Images of the Program
 
-## Starting Screen Screen
+## Starting Screen
 
 ![](Images/Main_Screen.png)
 
 ## Settings Screen
 
 ![](Images/Settings_Screen.png)
+
+## Progress Bar Screen
+
+![](Images/Process_Screen.png)
 
 ## Main Screen
 
@@ -75,8 +83,6 @@ At the moment, the program provides **five cleaning presets**:
 - Fill in the **mean**.
   
 - Fill in the **mode**.
-
-- Remove **outlier**.
   
 - Remove **duplicates**.
 
@@ -108,9 +114,9 @@ At the moment, the program provides **five cleaning presets**:
 
 ## Custom
 
-Currently redirects to the **Default preset.**
+A **custom configuration menu** appears after selecting the button and by pressing any option you can choose what dateset cleaning methods you want
 
-A **custom configuration menu** is planned for `v0.4.2-PRERELEASE` 
+**CUSTOMIZABLE THREADHOLD** isn't coming yet.
 
 # Development Status
 
@@ -122,8 +128,20 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to the following contributors:
 
-- **@Qoyyuum** - for testing the code and giving feedback.
+- **@Atesthecoder** - for designing interface the **BETA first GUI**.
+
+- **@Qoyyuum** - for testing the code and giving feedback throught the journey.
 
 # License
 
-This project is licensed under a **MIT License**, **(c) 2026**.
+This project is licensed under a **Personal Use Only License**.
+
+You **may not:**
+
+- Redistribution the project
+
+- Modification the source code
+
+- Use the software commercially
+
+without **explicit permission from the author.**
