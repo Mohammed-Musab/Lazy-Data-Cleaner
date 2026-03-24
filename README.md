@@ -66,7 +66,7 @@ This ensures your original data always remains unchanged.
 
 ## Progress Bar Screen
 
-![](Images/Process_Screen.png)
+![](Images/Progress_Screen.png)
 
 ## Main Screen
 
