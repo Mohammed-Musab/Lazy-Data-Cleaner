@@ -64,10 +64,6 @@ This ensures your original data always remains unchanged.
 
 ![](Images/Settings_Screen.png)
 
-## Progress Bar Screen
-
-![](Images/Process_Screen.png)
-
 ## Main Screen
 
 ![](Images/Main_2_Screen.png)
