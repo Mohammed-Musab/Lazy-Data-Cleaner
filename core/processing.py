@@ -6,6 +6,7 @@ from datetime import datetime
 from word2number import w2n
 import numpy as np
 from .read_and_write import load_file, save_file
+import contextlib
 
 # Reset Colorama
 init(autoreset=True)
@@ -16,6 +17,11 @@ def get_time():
 
 # Convert word to number
 def safe_w2n(value):
+    return value
+"""
+
+Disabled, waiting for word2number dev update it
+
     # Check if value is not a string or is nan
     if not isinstance(value, str) or pd.isna(value):
         return value
@@ -27,6 +33,8 @@ def safe_w2n(value):
     # If convertion failed return original value
     except:
         return value
+
+"""
 
 # Clean the nan
 def clean(x):

@@ -573,7 +573,7 @@ class LazyDataCleaner():
         from core.presets import default, AI, bussinses, streaming
         from core.functions import fill_mean, fill_median, fill_mode, duplicate, outlier, standardization
 
-        self.step    = 1
+        self.step    = 2
         self.current = 0
 
         if preset == 1:
