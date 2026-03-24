@@ -2,7 +2,7 @@
 
 **Lazy Data Cleaner** is a simple data cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic data cleaning accessible even for beginners.
 
-**Currently,** the program supports cleaning `.csv` datasets only.
+**Currently,** the program supports cleaning `.csv`, `.xlsx` and `.xls` datasets only.
 
 # REQUIREMENTS
 
@@ -28,7 +28,7 @@ You can install them by using this:
 
 # How to Run
 
-1. Place your `.csv` file inside the **`Upload`** folder.
+1. Place your `dataset` file inside the **`Upload`** folder.
 
 2. Double-click **`run.bat`** to start the application.
 
@@ -114,7 +114,7 @@ At the moment, the program provides **five cleaning presets**:
 
 ## Custom
 
-A **custom configuration menu** appears after selecting the button and by pressing any option you can choose what dateset cleaning methods you want
+A **custom configuration menu** appears after selecting the button and by pressing any option you can choose what dateset cleaning methods you want.
 
 **CUSTOMIZABLE THREADHOLD** isn't coming yet.
 
