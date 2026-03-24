@@ -458,6 +458,11 @@ class LazyDataCleaner():
         # Importing Libraries
         import threading
 
+        # Clear Buttons
+        self.settings_button.place_forget()
+        self.return_customize_button.place_forget()
+        self.force_csv_button.place_forget()
+
         # Define Loading Frame
         self.clear_frame()
         self.loadingframe = tk.Frame(self.mainframe, bg="light grey")
