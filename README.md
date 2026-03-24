@@ -56,13 +56,17 @@ This ensures your original data always remains unchanged.
 
 # Here Are Images of the Program
 
-## Starting Screen Screen
+## Starting Screen
 
 ![](Images/Main_Screen.png)
 
 ## Settings Screen
 
 ![](Images/Settings_Screen.png)
+
+## Progress Bar Screen
+
+![](Images/Process_Screen.png)
 
 ## Main Screen
 
