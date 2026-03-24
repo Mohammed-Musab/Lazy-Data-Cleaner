@@ -4,6 +4,7 @@ from datetime import datetime
 from colorama import init, Fore as F
 import numpy as np
 from scipy import stats
+from read_and_write import load_file, save_file
 
 # Get Current Time
 current_time = datetime.now().strftime("%H:%M:%S")
@@ -18,7 +19,7 @@ def standardization(data_csv):
     for file in data_csv:
 
         # Read file
-        df = pd.read_csv(file)
+        df = load_file(file)
 
         # Get numerical columns
         numerical_columns = df.select_dtypes(include=['number']).columns
@@ -27,7 +28,7 @@ def standardization(data_csv):
         df[numerical_columns] = (df[numerical_columns] - df[numerical_columns].mean()) / df[numerical_columns].std()
 
         # Save file
-        df.to_csv(file, index=False)
+        save_file(df, file)
 
         # Infrom user that standardization have finished
         print(F.GREEN + f"[{get_time()}] Applied standardization for '{file}'.")
@@ -37,7 +38,7 @@ def outlier(data_csv):
     for file in data_csv:
 
         # Read file
-        df = pd.read_csv(file)
+        df = load_file(file)
 
         # Get numerical columns
         numerical_columns = df.select_dtypes(include=[np.number]).columns
@@ -50,7 +51,7 @@ def outlier(data_csv):
         df_clean = df[(z_scores < threshold).all(axis=1)]
 
         # Save file
-        df_clean.to_csv(file, index=False)
+        save_file(df_clean, file)
 
         # Infrom user that outlier have been removed
         print(F.GREEN + f"[{get_time()}] Removed outliers for '{file}'.")
@@ -59,7 +60,7 @@ def outlier(data_csv):
 def duplicate(data_csv):
     for file in data_csv:
 
-        df = pd.read_csv(file)
+        df = load_file(file)
 
         initial_count = len(df)
         df.drop_duplicates(inplace=True)
@@ -91,7 +92,7 @@ def duplicate(data_csv):
             
             df.reset_index(inplace=True)
             
-        df.to_csv(file, index=False)
+        save_file(df, file)
         print(F.GREEN + f"[{get_time()}] Finished Removing Duplicates")
 
 # Fill in missing data with mean
@@ -99,7 +100,7 @@ def fill_mean(delete, na_threshold, data_csv):
     for file in data_csv:
 
         # Read file
-        df = pd.read_csv(file)
+        df = load_file(file)
 
         # Get numerical columns
         numerical_columns = df.select_dtypes(include=['number']).columns
@@ -124,14 +125,14 @@ def fill_mean(delete, na_threshold, data_csv):
                 print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with mean.")
         
         # Save File
-        df.to_csv(file, index=False)
+        save_file(df, file)
 
 # Fill in missing data with median
 def fill_median(delete, na_threshold, data_csv):
     for file in data_csv:
 
         # Read File
-        df = pd.read_csv(file)
+        df = load_file(file)
         
         # Get numerical columns
         numerical_columns = df.select_dtypes(include=['number']).columns
@@ -156,14 +157,14 @@ def fill_median(delete, na_threshold, data_csv):
                 print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with median.")
         
         # Save File
-        df.to_csv(file, index=False)
+        save_file(df, file)
 
 # Fill in missing data with mode
 def fill_mode(delete, na_threshold, data_csv):
     for file in data_csv:
 
         # Read File
-        df = pd.read_csv(file)
+        df = save_file(file)
 
         # Get categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
@@ -188,4 +189,4 @@ def fill_mode(delete, na_threshold, data_csv):
                 print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with mode.")
 
         # Save file
-        df.to_csv(file, index=False)
+        save_file(df, file)

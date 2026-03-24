@@ -1,8 +1,10 @@
 # Lazy Data Cleaner
 
-**Lazy Data Cleaner** is a simple data cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic data cleaning accessible even for beginners.
+**Lazy Data Cleaner** is a simple dataset cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic dataset cleaning accessible even for beginners.
 
-**Currently,** the program supports cleaning `.csv` datasets only.
+**Currently,** the program supports cleaning `.csv` datasets only,
+
+`.xlxs` support is planned.
 
 # REQUIREMENTS
 
@@ -12,13 +14,13 @@
 
 ## Libraries Required
 
-- Check `requirements.txt`.
+- Colorama
+
+- pandas
+
+- numpy
 
 All dependencies are **mandatory** to run the program successfully.
-
-You can install them by using this:
-
-`py -m pip install -r requirements.txt`
 
 # How to Run
 
@@ -69,6 +71,12 @@ This ensures your original data always remains unchanged.
 At the moment, the program provides **five cleaning presets**:
 
 ## Default   
+
+- Fill in the **mean**.
+  
+- Fill in the **mode**.
+
+- Remove **outlier**.
   
 - Remove **duplicates**.
 
@@ -100,9 +108,9 @@ At the moment, the program provides **five cleaning presets**:
 
 ## Custom
 
-A **custom configuration menu** appears after selecting the button and by pressing any option you can choose what dateset cleaning methods you want
+Currently redirects to the **Default preset.**
 
-**CUSTOMIZABLE THREADHOLD** isn't coming yet.
+A **custom configuration menu** is planned for `v0.4.2-PRERELEASE` 
 
 # Development Status
 
@@ -114,20 +122,8 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to the following contributors:
 
-- **@Atesthecoder** - for designing interface the **BETA first GUI**.
-
-- **@Qoyyuum** - for testing the code and giving feedback throught the journey.
+- **@Qoyyuum** - for testing the code and giving feedback.
 
 # License
 
-This project is licensed under a **Personal Use Only License**.
-
-You **may not:**
-
-- Redistribution the project
-
-- Modification the source code
-
-- Use the software commercially
-
-without **explicit permission from the author.**
+This project is licensed under a **MIT License**, **(c) 2026**.

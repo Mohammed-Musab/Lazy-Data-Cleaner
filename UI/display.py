@@ -4,8 +4,8 @@ from tkinter import ttk
 
 """
 
-RED         : #003609
-GREEN       : #3d0000
+Green     : #003609
+Red       : #3d0000
 
 """
 
@@ -40,6 +40,7 @@ class LazyDataCleaner():
         self.duplicates                 = 0
         self.outlier                    = 0
         self.standardizations           = 0
+        self.force_csv                  = 0
 
         # Create all widgets
         self.create_widgets()
@@ -74,7 +75,7 @@ class LazyDataCleaner():
         # Label - Version
         self.version_label = tk.Label(
             self.mainframe,
-            text="v0.4.2-PRERELEASE",
+            text="v0.4.3-PRERELEASE",
             font=("Arial", 20, "bold"),
             bg="#2c3e50",
             fg="white",
@@ -329,6 +330,19 @@ class LazyDataCleaner():
                     command=self.returned_custom
                 )
         
+        # Force save as csv
+        self.force_csv_button = tk.Button(
+                    self.root,
+                    text="Force csv save as files",
+                    font=("Arial", 10, "bold"),
+                    bg="#3d0000",
+                    fg="white",
+                    bd=0,
+                    highlightthickness=0,
+                    relief="flat",
+                    command=lambda: self.customizable_selection(7)
+        )
+
     def clear_frame(self):
         # Remove everything in screen
         for widget in self.mainframe.winfo_children():
@@ -419,6 +433,16 @@ class LazyDataCleaner():
             else:
                 self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
+        elif value_1 == 7:
+            if self.force_csv == 0:
+                self.force_csv = 1
+                self.force_csv_button.config(bg="#003609")
+            elif self.force_csv == 1:
+                self.force_csv = 0
+                self.force_csv_button.config(bg="#3d0000")
+            else:
+                self.get_time()
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
 
         # Update The Screen
         self.root.update()
@@ -426,6 +450,8 @@ class LazyDataCleaner():
     def run(self):
         # Remove returned button
         self.return_button.place_forget()
+
+        # Forget Force csv Button
         self.return_customize_button.place_forget()
         
         # Clear Frame
@@ -471,6 +497,8 @@ class LazyDataCleaner():
     def rerun(self):
         # Remove returned button
         self.return_customize_button.place_forget()
+
+        # Forget Force csv Button
         self.return_button.place_forget()
         
         # Clear Frame
@@ -487,6 +515,7 @@ class LazyDataCleaner():
         # Clear Settings Button
         self.settings_button.place_forget()
         self.return_customize_button.place_forget()
+        self.force_csv_button.place_forget()
         # Clear Frame
         self.clear_frame()
 
@@ -498,11 +527,13 @@ class LazyDataCleaner():
         self.settings_button_streaming.grid(row=5, column=0, sticky="ew")
         self.settings_button_custom.grid(row=6, column=0, sticky="ew")
         self.return_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
+        self.force_csv_button.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
         self.root.update()
     
     def returned(self):
         # Remove returned button
-        self.return_button.place_forget()        
+        self.return_button.place_forget()  
+        self.force_csv_button.place_forget()      
 
         # Show Main Screen
         self.main_screen()
@@ -510,6 +541,9 @@ class LazyDataCleaner():
     def returned_custom(self):
         # Remove Returned Button
         self.return_customize_button.place_forget()   
+        
+        # Forget Force csv Button
+        self.force_csv_button.place_forget()
 
         # Show Settings Screen
         self.settings()
@@ -575,7 +609,10 @@ class LazyDataCleaner():
         init(autoreset=True)
 
         # Processing files
-        success_process_csv, message_process_csv = process_files_csv()
+        if self.force_csv == 0:
+            success_process_csv, message_process_csv = process_files_csv()
+        if self.force_csv == 1:
+            success_process_csv, message_process_csv = process_files_csv(True)
         step_done()
 
         # Getting Paths
