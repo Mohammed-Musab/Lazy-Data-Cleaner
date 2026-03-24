@@ -5,7 +5,7 @@ from colorama import Fore as F, init
 from datetime import datetime
 from word2number import w2n
 import numpy as np
-from read_and_write import load_file, save_file
+from .read_and_write import load_file, save_file
 
 # Reset Colorama
 init(autoreset=True)

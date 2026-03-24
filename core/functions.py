@@ -4,7 +4,7 @@ from datetime import datetime
 from colorama import init, Fore as F
 import numpy as np
 from scipy import stats
-from read_and_write import load_file, save_file
+from .read_and_write import load_file, save_file
 
 # Get Current Time
 current_time = datetime.now().strftime("%H:%M:%S")
@@ -15,8 +15,8 @@ def get_time():
     return datetime.now().strftime("%H:%M:%S")
 
 # Standardization
-def standardization(data_csv):
-    for file in data_csv:
+def standardization(data):
+    for file in data:
 
         # Read file
         df = load_file(file)
@@ -34,8 +34,8 @@ def standardization(data_csv):
         print(F.GREEN + f"[{get_time()}] Applied standardization for '{file}'.")
 
 # Outlier
-def outlier(data_csv):
-    for file in data_csv:
+def outlier(data):
+    for file in data:
 
         # Read file
         df = load_file(file)
@@ -57,8 +57,8 @@ def outlier(data_csv):
         print(F.GREEN + f"[{get_time()}] Removed outliers for '{file}'.")
 
 # Duplicates
-def duplicate(data_csv):
-    for file in data_csv:
+def duplicate(data):
+    for file in data:
 
         df = load_file(file)
 
@@ -96,8 +96,8 @@ def duplicate(data_csv):
         print(F.GREEN + f"[{get_time()}] Finished Removing Duplicates")
 
 # Fill in missing data with mean
-def fill_mean(delete, na_threshold, data_csv):
-    for file in data_csv:
+def fill_mean(delete, na_threshold, data):
+    for file in data:
 
         # Read file
         df = load_file(file)
@@ -128,8 +128,8 @@ def fill_mean(delete, na_threshold, data_csv):
         save_file(df, file)
 
 # Fill in missing data with median
-def fill_median(delete, na_threshold, data_csv):
-    for file in data_csv:
+def fill_median(delete, na_threshold, data):
+    for file in data:
 
         # Read File
         df = load_file(file)
@@ -160,11 +160,11 @@ def fill_median(delete, na_threshold, data_csv):
         save_file(df, file)
 
 # Fill in missing data with mode
-def fill_mode(delete, na_threshold, data_csv):
-    for file in data_csv:
+def fill_mode(delete, na_threshold, data):
+    for file in data:
 
         # Read File
-        df = save_file(file)
+        df = load_file(file)
 
         # Get categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns

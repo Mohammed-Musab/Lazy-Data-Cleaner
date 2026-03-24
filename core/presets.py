@@ -1,5 +1,5 @@
 # Importing Libraries
-from .functions import fill_mean, fill_median, fill_mode, outlier, duplicate, standardization
+from .functions import fill_median, fill_mode, outlier, duplicate, standardization
 
 # Default preset
 def default(data_csv):

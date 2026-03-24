@@ -49,7 +49,8 @@ class LazyDataCleaner():
         self.main_screen()
     
     def get_time(self):
-        return self.datetime.now().strftime("%H:%M:%S")
+        from datetime import datetime
+        return datetime.now().strftime("%H:%M:%S")
     
     def create_widgets(self):
         # Defualt Values For Buttons & Labels Size
@@ -381,7 +382,6 @@ class LazyDataCleaner():
                 self.mean = 0
                 self.customize_button_mean.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 2:
             if self.median == 0:
@@ -391,7 +391,6 @@ class LazyDataCleaner():
                 self.median = 0
                 self.customize_button_median.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 3:
             if self.mode == 0:
@@ -401,7 +400,6 @@ class LazyDataCleaner():
                 self.mode = 0
                 self.customize_button_mode.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 4:
             if self.duplicates == 0:
@@ -411,7 +409,6 @@ class LazyDataCleaner():
                 self.duplicates = 0
                 self.customize_button_duplicates.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 5:
             if self.outlier == 0:
@@ -421,7 +418,6 @@ class LazyDataCleaner():
                 self.outlier = 0
                 self.customize_button_outlier.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 6:
             if self.standardizations == 0:
@@ -431,7 +427,6 @@ class LazyDataCleaner():
                 self.standardizations = 0
                 self.customize_button_standardization.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
         elif value_1 == 7:
             if self.force_csv == 0:
@@ -441,7 +436,6 @@ class LazyDataCleaner():
                 self.force_csv = 0
                 self.force_csv_button.config(bg="#3d0000")
             else:
-                self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
 
         # Update The Screen
@@ -568,9 +562,8 @@ class LazyDataCleaner():
 
     def main_function(self, preset):
         # Importing Libraries
-        from core.processing import process_files_csv
+        from core.processing import process_files
         from colorama import Fore as F, init
-        from datetime import datetime
         from pathlib import Path
         from core.presets import default, AI, bussinses, streaming
         from core.functions import fill_mean, fill_median, fill_mode, duplicate, outlier, standardization
@@ -610,56 +603,59 @@ class LazyDataCleaner():
 
         # Processing files
         if self.force_csv == 0:
-            success_process_csv, message_process_csv = process_files_csv()
+            success_process_csv, message_process_csv = process_files()
         if self.force_csv == 1:
-            success_process_csv, message_process_csv = process_files_csv(True)
+            success_process_csv, message_process_csv = process_files(True)
         step_done()
 
         # Getting Paths
         base_directory = Path(__file__).resolve().parent.parent
         upload_directory = base_directory / "Data"
-        data_csv = list(upload_directory.glob("*.csv"))
+        data = []
+        data.extend(upload_directory.glob("*.csv"))                 ## Add csv files to list
+        data.extend(upload_directory.glob("*.xlsx"))                ## Add xlsx files to list
+        data.extend(upload_directory.glob("*.xls"))                 ## Add xls files to list
 
         # If no errors
         if success_process_csv:
 
             # Preset Selected
             if preset == 1:
-                default(data_csv)
+                default(data)
                 step_done()
             elif preset == 2:
-                AI(data_csv)
+                AI(data)
                 step_done()
             elif preset == 3:
-                bussinses(data_csv)
+                bussinses(data)
                 step_done()
             elif preset == 4:
-                streaming(data_csv)
+                streaming(data)
                 step_done()
             elif preset == 5:
                 if self.mean == 1:
-                    fill_mean(True, 5, data_csv)
+                    fill_mean(True, 5, data)
                     step_done()
                 if self.median == 1:
-                    fill_median(True, 5, data_csv)
+                    fill_median(True, 5, data)
                     step_done()
                 if self.mode == 1:
-                    fill_mode(True, 5, data_csv)
+                    fill_mode(True, 5, data)
                     step_done()
                 if self.duplicates == 1:
-                    duplicate(data_csv)
+                    duplicate(data)
                     step_done()
                 if self.outlier == 1:
-                    outlier(data_csv)
+                    outlier(data)
                     step_done()
                 if self.standardizations == 1:
-                    standardization(data_csv)
+                    standardization(data)
                     step_done()
                 
             else:
                 self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Presets Selection... Switching to Defualt")
-                default(data_csv)
+                default(data)
                 self.step = 1
                 step_done()
 
