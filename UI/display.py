@@ -344,10 +344,31 @@ class LazyDataCleaner():
                     command=lambda: self.customizable_selection(7)
         )
 
+        # Upload File - Button
+        from UI.upload_file import upload_file
+        self.upload_file_button = tk.Button(
+            self.root,
+            text="Upload File",
+            font=("Arial", 10, "bold"),
+            bg="#95a5a6",
+            fg="white",
+            bd=0,
+            highlightthickness=0,
+            relief="flat",
+            command=upload_file
+        )
+
     def clear_frame(self):
         # Remove everything in screen
         for widget in self.mainframe.winfo_children():
             widget.grid_forget()
+
+        # Remove placed buttons
+        self.upload_file_button.place_forget()
+        self.settings_button.place_forget()
+        self.return_button.place_forget()
+        self.return_customize_button.place_forget()
+        self.force_csv_button.place_forget()
 
         # Restore background
         self.mainframe.configure(bg="light grey")
@@ -360,6 +381,7 @@ class LazyDataCleaner():
         self.run_button.grid(row=1, sticky="ew")
         self.version_label.grid(row=2, sticky="ew")
         self.settings_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
+        self.upload_file_button.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
 
     def preset_selection(self, value, text): 
         # Set New Preset
@@ -442,12 +464,6 @@ class LazyDataCleaner():
         self.root.update()
 
     def run(self):
-        # Remove returned button
-        self.return_button.place_forget()
-
-        # Forget Force csv Button
-        self.return_customize_button.place_forget()
-        
         # Clear Frame
         self.clear_frame()
 
@@ -457,11 +473,6 @@ class LazyDataCleaner():
     def progress_start(self):
         # Importing Libraries
         import threading
-
-        # Clear Buttons
-        self.settings_button.place_forget()
-        self.return_customize_button.place_forget()
-        self.force_csv_button.place_forget()
 
         # Define Loading Frame
         self.clear_frame()
@@ -493,13 +504,7 @@ class LazyDataCleaner():
         thread = threading.Thread(target=self.main_function, args=(self.preset,), daemon=True)
         thread.start()
 
-    def rerun(self):
-        # Remove returned button
-        self.return_customize_button.place_forget()
-
-        # Forget Force csv Button
-        self.return_button.place_forget()
-        
+    def rerun(self):        
         # Clear Frame
         self.clear_frame()
 
@@ -511,10 +516,6 @@ class LazyDataCleaner():
         self.root.destroy()
     
     def settings(self):
-        # Clear Settings Button
-        self.settings_button.place_forget()
-        self.return_customize_button.place_forget()
-        self.force_csv_button.place_forget()
         # Clear Frame
         self.clear_frame()
 
@@ -529,29 +530,17 @@ class LazyDataCleaner():
         self.force_csv_button.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
         self.root.update()
     
-    def returned(self):
-        # Remove returned button
-        self.return_button.place_forget()  
-        self.force_csv_button.place_forget()      
-
+    def returned(self):      
         # Show Main Screen
         self.main_screen()
 
     def returned_custom(self):
-        # Remove Returned Button
-        self.return_customize_button.place_forget()   
-        
-        # Forget Force csv Button
-        self.force_csv_button.place_forget()
-
         # Show Settings Screen
         self.settings()
 
     def customize(self):
         # Set The Preset To Custom
         self.preset_selection(5, "Custom Settings Have Been Selected")
-        # Clear Settings Button
-        self.settings_button.place_forget()
         # Clear Frame
         self.clear_frame()
 
