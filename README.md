@@ -1,38 +1,42 @@
-# Lazy Data Cleaner
+# ABOUT LAZY DATA CLEANING
 
-**Lazy Data Cleaner** is a simple data cleaning tool designed to help preprocess datasets with accuracy and efficiency. It focuses on ease of use and quick setup, making basic data cleaning accessible even for beginners.
+**Lazy Data Cleaner** is a lightweight dataset cleaning tool designed to preprocess data quickly and efficiently. It focuses on simplicity, making essential data cleaning accessible even for beginners.
 
-**Currently,** the program supports cleaning `.csv` datasets only.
+**Currently,** the program supports the following file formats:
+
+- `.csv`
+- `.xlsx`
+- `.xls`
 
 # REQUIREMENTS
+
+All dependencies are **required** to run the program successfully.
+
+## System Requirements
 
 - **Operating System:** Windows
 
 - **Python:** 3.13 or higher
 
-## Libraries Required
+## Python Dependencies
 
-- Colorama (0.4.6)
+See `requirements.txt` for the full list of required libraries.
 
-- pandas (2.3.1)
-
-- numpy (2.4.2)
-
-- scripy (1.16.0)
-
-All dependencies are **mandatory** to run the program successfully.
+## Installation
 
 You can install them by using this:
 
 `py -m pip install -r requirements.txt`
 
-# How to Run
+# HOW TO RUN
 
-1. Place your `.csv` file inside the **`Upload`** folder.
+1. Place your dataset file inside the **`Upload`** folder
 
-2. Double-click **`run.bat`** to start the application.
+*(or you could upload them by pressing `Upload File` button)*
 
-3. The program will process the dataset.
+2. Double-click **`run.bat`** to start the application
+
+3. The program will process your dataset automatically
 
 4. The cleaned dataset will appear in the **`Data`** folder.
 
@@ -40,7 +44,7 @@ The console window (**`cmd`**) will display processing logs.
 
 **Do not close the console while the program is running.**
 
-# About Files Processing
+# ABOUT FILE PROCESSING
 
 The program **never modifies or deletes** files located in the **`Upload`** folder.
 
@@ -54,31 +58,35 @@ Instead:
 
 This ensures your original data always remains unchanged.
 
-# Here Are Images of the Program
+# APPLICATION SCREENS
 
 ## Starting Screen
 
-![](Images/Main_Screen.png)
+![](Images/Main.png)
 
 ## Settings Screen
 
-![](Images/Settings_Screen.png)
+![](Images/Settings.png)
 
-## Main Screen
+## Progress Bar Screen
+
+![](Images/Progress.png)
+
+## Customize Screen
+
+![](Images/Customize.png)
+
+## End Screen
 
 ![](Images/Main_2_Screen.png)
 
-**All Screens are accessable.**
+**All Screens are accessable within the application.**
 
-# Cleaning Presets
+# CLEANING PRESETS
 
 At the moment, the program provides **five cleaning presets**:
 
 ## Default   
-
-- Fill in the **mean**.
-  
-- Fill in the **mode**.
   
 - Remove **duplicates**.
 
@@ -110,34 +118,38 @@ At the moment, the program provides **five cleaning presets**:
 
 ## Custom
 
-A **custom configuration menu** appears after selecting the button and by pressing any option you can choose what dateset cleaning methods you want
+Allows users to manually select cleaning operations through a configuration menu.
 
-**CUSTOMIZABLE THREADHOLD** isn't coming yet.
+Custom threshold configuration is **not yet available**.
 
-# Development Status
+# DEVELOPMENT STATUS
 
 The project is currently under **active development.**
 
 Features, presets, and workflows may change in future releases.
 
-# Credits
+# CREDITS
 
-Special thanks to the following contributors:
+Special thanks to:
 
-- **@Atesthecoder** - for designing interface the **BETA first GUI**.
+- **@Atesthecoder** - for designing interface the **beta first GUI**.
 
 - **@Qoyyuum** - for testing the code and giving feedback throught the journey.
 
-# License
+# LICENSE
 
-This project is licensed under a **Personal Use Only License**.
+This project is licensed under the **MIT License**.
 
-You **may not:**
+## You are free to:
 
-- Redistribution the project
+- Use the software for personal and commercial purposes
 
-- Modification the source code
+- Modify the source code
 
-- Use the software commercially
+- Distribute the project
 
-without **explicit permission from the author.**
+## Under the condition that:
+
+- The original copyright and license notice are included
+
+For full details, see the `LICENSE` file.

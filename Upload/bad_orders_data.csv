@@ -1,0 +1,12 @@
+Order ID, order_id ,Customer Name,Customer_Name,Age,Date,Amount ($),Currency,Country ,Product
+001,1, john doe ,John Doe,27,2024/01/05,100,usd,Brunei,Widget A
+002,2,Jane Doe,,twenty five,05-01-2024,200,,BRN ,Widget B
+003,,JOHN   DOE,John D.,27 ,2024-01-07, -50,USD,brunei,Widget-A
+004,4,Ali bin Abu,Ali A.,,2024/13/01,300,USD,Brunei ,Widget C
+005,5,  jane doe ,Jane Doe,25,2024-01-09,200.00,USD,Brunei Darussalam,Widget B
+005,5,JANE DOE,Jane Doe ,25 ,2024-01-09,200,USD,,Widget B
+006,6,Bob Lee,Bob Lee,40,01-10-24,abc,USD,Malaysia,Widget D
+007,7,Mary-Sue,Mary Sue, ,2024/01/11,150,usd,MY,Widget E
+,8,John Doe,John Doe,27,2024-01-12,100,USD,Brunei,Widget A
+009,9,John  Doe,John Doe,27,2024-01-12,,USD,Brunei,Widget A
+010,10,Ali bin Abu,Ali bin Abu, 35,2024-31-01,500,usd,Brunei,Widget F

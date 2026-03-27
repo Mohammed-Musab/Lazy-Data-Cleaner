@@ -1,20 +1,12 @@
 # Importing Libraries
-from .functions import fill_mean, fill_median, fill_mode, outlier, duplicate, standardization
-from datetime import datetime
-
-# Get Current Time
-current_time = datetime.now().strftime("%H:%M:%S")
+from .functions import fill_median, fill_mode, outlier, duplicate, standardization
 
 # Default preset
 def default(data_csv):
-
-    fill_mean(True, 2, data_csv)
-    fill_mode(True, 2, data_csv)
     duplicate(data_csv)
 
 # AI preset
 def AI(data_csv):
-
     fill_median(True, 30, data_csv)
     fill_mode(True, 30, data_csv)
     outlier(data_csv)
@@ -23,13 +15,11 @@ def AI(data_csv):
 
 # Bussiness preset
 def bussinses(data_csv):
-
     fill_mode(False, 5, data_csv)
     duplicate(data_csv)
 
 # Streaming preset
 def streaming(data_csv):
-
     fill_mode(True, 50, data_csv)
     outlier(data_csv)
     duplicate(data_csv)
