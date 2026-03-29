@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from core.processing import process_files
+
 """
 
 Green     : #003609
@@ -450,15 +452,6 @@ class LazyDataCleaner():
                 self.customize_button_standardization.config(bg="#3d0000")
             else:
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 7:
-            if self.force_csv == 0:
-                self.force_csv = 1
-                self.force_csv_button.config(bg="#003609")
-            elif self.force_csv == 1:
-                self.force_csv = 0
-                self.force_csv_button.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
 
         # Update The Screen
         self.root.update()
@@ -596,10 +589,7 @@ class LazyDataCleaner():
         init(autoreset=True)
 
         # Processing files
-        if self.force_csv == 0:
-            success_process_csv, message_process_csv = process_files()
-        if self.force_csv == 1:
-            success_process_csv, message_process_csv = process_files(True)
+        success_process_csv, message_process_csv = process_files(bool(self.force_csv))
         step_done()
 
         # Getting Paths

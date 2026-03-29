@@ -18,8 +18,8 @@ def get_time():
 # Convert word to number
 def safe_w2n(value):
     return value
-"""
 
+"""
 Disabled, waiting for word2number dev update it
 
     # Check if value is not a string or is nan
@@ -33,7 +33,6 @@ Disabled, waiting for word2number dev update it
     # If convertion failed return original value
     except:
         return value
-
 """
 
 # Clean the nan

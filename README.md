@@ -78,7 +78,7 @@ This ensures your original data always remains unchanged.
 
 ## End Screen
 
-![](Images/Main_2_Screen.png)
+![](Images/End.png)
 
 **All Screens are accessable within the application.**
 

@@ -80,7 +80,7 @@ def duplicate(data):
                     main_index = normalized[normal]
                     # Inform User That Column Will Be Merged
                     print(F.RED + f"[{get_time()}] Duplicate Detected: '{index_label}' looks like '{main_index}'")
-                    df.loc[main_index] = df.loc[main_index].combine_first(df[index_label])
+                    df.loc[main_index] = df.loc[main_index].combine_first(df.loc[index_label])
                     to_remove.append(index_label)
                     print(F.YELLOW + f"[{get_time()}] Merged '{index_label}' into '{main_index}'")
                 else:
