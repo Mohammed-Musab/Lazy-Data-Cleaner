@@ -25,7 +25,7 @@ def upload_file():
     base_directory = Path(__file__).resolve().parent.parent
 
     # Create Upload folder inside project
-    upload_folder = upload_directory = base_directory / "Upload"
+    upload_folder = base_directory / "Upload"
     os.makedirs(upload_folder, exist_ok=True)
 
     # Copy file

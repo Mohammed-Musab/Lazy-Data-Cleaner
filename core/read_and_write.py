@@ -27,7 +27,7 @@ def load_file(path, **kwargs):
 
     # Else return unspported file type issue
     else:
-        raise ValueError(f"[{get_time}] Unsupported file type: {extension}")
+        raise ValueError(f"[{get_time()}] Unsupported file type: {extension}")
 
 # Save Files
 def save_file(df, filename, force_csv=False, **kwargs):
