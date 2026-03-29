@@ -452,6 +452,15 @@ class LazyDataCleaner():
                 self.customize_button_standardization.config(bg="#3d0000")
             else:
                 print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
+        elif value_1 == 7:
+            if self.force_csv == 0:
+                self.force_csv = 1
+                self.force_csv_button.config(bg="#003609")
+            elif self.force_csv == 1:
+                self.force_csv = 0
+                self.force_csv_button.config(bg="#3d0000")
+            else:
+                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
 
         # Update The Screen
         self.root.update()
