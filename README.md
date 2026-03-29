@@ -10,8 +10,6 @@
 
 # REQUIREMENTS
 
-All dependencies are **required** to run the program successfully.
-
 ## System Requirements
 
 - **Operating System:** Windows
@@ -24,7 +22,7 @@ See `requirements.txt` for the full list of required libraries.
 
 ## Installation
 
-You can install them by using this:
+Install dependencies using:
 
 `py -m pip install -r requirements.txt`
 
@@ -32,13 +30,13 @@ You can install them by using this:
 
 1. Place your dataset file inside the **`Upload`** folder
 
-*(or you could upload them by pressing `Upload File` button)*
+*(Alternatively, use the `Upload File` button in the application)*
 
 2. Double-click **`run.bat`** to start the application
 
-3. The program will process your dataset automatically
+3. The program will automatically process your dataset
 
-4. The cleaned dataset will appear in the **`Data`** folder.
+4. The cleaned dataset will be saved in the **`Data`** folder.
 
 The console window (**`cmd`**) will display processing logs.
 
@@ -80,7 +78,7 @@ This ensures your original data always remains unchanged.
 
 ![](Images/End.png)
 
-**All Screens are accessable within the application.**
+**All Screens are accessible within the application.**
 
 # CLEANING PRESETS
 
@@ -92,11 +90,11 @@ At the moment, the program provides **five cleaning presets**:
 
 ## AI
 
-- Fill in the **median**.
+- Fill missing values with **median**.
 
-- Fill in the **mode**.
+- Fill missing values with **mode**.
 
-- Remove **outlier**.
+- Remove **outliers**.
 
 - Remove **duplicates**.
 
@@ -104,15 +102,15 @@ At the moment, the program provides **five cleaning presets**:
 
 ## Business
 
-- Fill in the **mode**.
+- Fill missing values with **mode**.
 
 - Remove **duplicates**.
 
 ## Streaming 
  
-- Fill in the **mode**.
+- Fill missing values with **mode**.
 
--  Remove **outlier**.
+-  Remove **outliers**.
   
 -  Remove **duplicates**.
 
@@ -132,9 +130,9 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to:
 
-- **@Atesthecoder** - for designing interface the **beta first GUI**.
+- **@Atesthecoder** - for designing interface the **initial GUI**.
 
-- **@Qoyyuum** - for testing the code and giving feedback throught the journey.
+- **@Qoyyuum** - for testing the code and giving feedback throughout the journey.
 
 # LICENSE
 
