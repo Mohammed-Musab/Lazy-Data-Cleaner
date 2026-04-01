@@ -6,7 +6,7 @@ from datetime import datetime
 from word2number import w2n
 import numpy as np
 from .read_and_write import load_file, save_file
-import contextlib
+import contextlib, os
 
 # Reset Colorama
 init(autoreset=True)
@@ -15,25 +15,42 @@ init(autoreset=True)
 def get_time():
     return datetime.now().strftime("%H:%M:%S")
 
+# Identify numerical like columns
+def is_numeric_like(series, sample_size=100):
+    # Get a sample of the series
+    series = series.dropna().astype(str).head(sample_size)
+
+    # If more than 50% of values are digits or can be converted to a number
+    count_numeric = sum([v.replace('.', '', 1).isdigit() or v.replace('-', '', 1).isdigit() for v in series])
+    return count_numeric / max(len(series), 1) > 0.5
+
 # Convert word to number
-def safe_w2n(value):
-    return value
+def safe_w2n(series, cap=1000):
 
-"""
-Disabled, waiting for word2number dev update it
+    # Get the unquie values
+    unique_values = series.dropna().unique()
 
-    # Check if value is not a string or is nan
-    if not isinstance(value, str) or pd.isna(value):
-        return value
+    # Check if the number of unique values >= cap
+    if len(unique_values) >= cap:
+        print(F.YELLOW + f"[{get_time()}] Warning: Too many unique values, {len(unique_values)}.\nSkipping word to number conversion.")
+        return series
     
-    # Try to convert it
-    try:
-        return w2n.word_to_num(value)
-    
-    # If convertion failed return original value
-    except:
-        return value
-"""
+    cache = {}
+
+    for value in unique_values:
+ 
+        try:
+            # Convert the value to a number
+                with open(os.devnull, 'w') as f, \
+                     contextlib.redirect_stdout(f), \
+                     contextlib.redirect_stderr(f):
+
+                    cache[value] = w2n.word_to_num(value)
+        except:
+            # If conversion fails, keep the original value
+            cache[value] = value
+
+    return series.map(lambda x: cache.get(x, x))
 
 # Clean the nan
 def clean(x):
@@ -50,8 +67,8 @@ def clean(x):
     if s.lower() in ['nan', 'none', '']:
         return np.nan
     
-    # Return the lower text
-    return s.lower()
+    # Return
+    return s
 
 # Format String
 def format_string_values(x):
@@ -67,86 +84,30 @@ def format_string_values(x):
 def merging(df):
 
     # Column name directory
-    new_column_names = {}
+    normalized = {}  
+    to_merge = []  
 
     # For each column name
     for column in df.columns:
-        # Format the column Name
-        cleaned_name = clean(column)
-        cleaned_name = safe_w2n(cleaned_name)
-        cleaned_name = format_string_values(cleaned_name)
-
-        # Save the new column name
-        new_column_names[column] = str(cleaned_name)
-
-    # Rename columns
-    df = df.rename(columns=new_column_names)
-
-    # Lists
-    columns = df.columns.tolist()
-    normalized = {}
-    to_remove = []
-
-    # For each column in columns
-    for column in columns:
-        # Correct Format
-        normal = column.lower().strip()
-
-        # Check if the name is already there
+        normal = column.lower().replace(" ", "_").replace("-", "_")
         if normal in normalized:
-            # Filter the normalized data to keep only the normal rows
-            main_column = normalized[normal]
-
-            # Inform user that column will be merged
-            print(F.RED + f"[{get_time()}] Duplicate Detected: '{column}' looks like '{main_column}'")
-            
-            # User input loop
-            while True:
-                # User Input
-                user_input = input(F.CYAN + f"[{get_time()}] Would you like to merge them? (Y/N): ").lower()
-
-                # If user allow merging
-                if user_input == "y":
-                    # Check both right and left columns
-                    left = df[main_column]
-                    right = df[column]
-
-                    # First replace missing data in the right with left columns
-                    if isinstance(left, pd.DataFrame):
-                        left = left.iloc[:, 0]
-
-                    # Then replace missing data in the left with right columns 
-                    if isinstance(right, pd.DataFrame):
-                        right = right.iloc[:, 0]
-                    
-                    # Combine them and remove the left column
-                    df[main_column] = left.combine_first(right)
-                    to_remove.append(column)
-
-                    # Inform user that process finished and end cycle
-                    print(F.YELLOW + f"[{get_time()}] Merged '{column}' into '{main_column}'")
-                    break
-
-                # If user doesn't allow merging
-                elif user_input == "n":
-                    # Rename column
-                    new_name = f"{column}_2"
-                    df = df.rename(columns={column: new_name})
-
-                    # Inform user that process finished and end cycle
-                    print(F.YELLOW + f"[{get_time()}] Kept both. Renamed '{column}' to '{new_name}'")
-                    break
-
-                # If invaild input
-                else:
-                    print(F.RED + f"[{get_time()}] Invalid Input Try Again")
-        
-        # If the name not already there add it
+            to_merge.append((normalized[normal], column))
         else:
             normalized[normal] = column
 
-    # Delete the redundant columns
-    df = df.drop(columns=to_remove)
+    for target, source in to_merge:
+        left = df[target]
+        right = df[source]
+
+        if isinstance(left, pd.DataFrame):
+            left = left.iloc[:, 0]
+        if isinstance(right, pd.DataFrame):
+            right = right.iloc[:, 0]
+
+        df[target] = left.where(left.notna(), right)
+        df = df.drop(columns=[source])
+        print(F.YELLOW + f"[{get_time()}] Merged '{source}' into '{target}'")
+
     return df
 
 # Function - Copying Files
@@ -156,7 +117,7 @@ def process_files(force_change_csv=False):
     print(F.GREEN + f"[{get_time()}] Processing started...")
 
     # Getting (Paths)
-    base_directory = Path(__file__).resolve().parent.parent     ## Parent Folder Directory
+    base_directory = Path(__file__).resolve().parents[1]         ## Parent Folder Directory
     upload_directory = base_directory / "Upload"                ## Upload Folder
     data_directory = base_directory / "Data"                    ## Data Folder
     
@@ -194,9 +155,29 @@ def process_files(force_change_csv=False):
             
             # Read the CSV file
             df = load_file(file)
-            df = df.map(clean)
-            df = df.map(safe_w2n)
-            df = df.map(format_string_values)
+            
+            # Clean the data
+            for column in df.columns:
+                if df[column].dtype == object:
+                    df[column] = df[column].apply(clean)
+            
+            # Convert numeric columns
+            for column in df.columns:
+                if df[column].dtype != object:
+                    df[column] = pd.to_numeric(df[column], errors='coerce')
+
+            # Convert word to numbers
+            for column in df.columns:
+                if df[column].dtype == object and is_numeric_like(df[column]):
+                    df[column] = safe_w2n(df[column])
+
+            # Format string values
+            for column in df.columns:
+                if df[column].dtype == object and not is_numeric_like(df[column]):
+                    df[column] = df[column].apply(format_string_values)
+                    df[column] = df[column].str.replace(r'[\s\-]+', '_', regex=True)
+            
+            # Merging columns
             df = merging(df)
 
             # Rename the file while keeping orginial name and save it to (Data) folder

@@ -78,7 +78,7 @@ class LazyDataCleaner():
         # Label - Version
         self.version_label = tk.Label(
             self.mainframe,
-            text="v0.4.3-PRERELEASE",
+            text="v0.4.3 hotfix (2)",
             font=("Arial", 20, "bold"),
             bg="#2c3e50",
             fg="white",

@@ -22,15 +22,16 @@ def upload_file():
         return
 
     # Get absolute path of current script directory
-    base_directory = Path(__file__).resolve().parent.parent
+    base_directory = Path(__file__).resolve().parent[1]
 
     # Create Upload folder inside project
     upload_folder = base_directory / "Upload"
-    os.makedirs(upload_folder, exist_ok=True)
+    upload_folder.mkdir(exist_ok=True)
+    file_path = Path(file_path).resolve(strict=True)
 
     # Copy file
     try:
-        destination = os.path.join(upload_folder, os.path.basename(file_path))
+        destination = upload_folder / file_path.name
         shutil.copy(file_path, destination)
         messagebox.showinfo("Success", f"File uploaded to:\n{destination}")
     

@@ -32,7 +32,7 @@ def load_file(path, **kwargs):
 # Save Files
 def save_file(df, filename, force_csv=False, **kwargs):
     # Get the orginial path
-    data_directory = Path(__file__).resolve().parent.parent / "Data"
+    data_directory = Path(__file__).resolve().parents[1] / "Data"
     data_directory.mkdir(parents=True, exist_ok=True)
     
     # If user want to force to be csv

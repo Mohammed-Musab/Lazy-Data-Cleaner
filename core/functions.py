@@ -91,7 +91,19 @@ def duplicate(data):
                 df.drop(index=to_remove, inplace=True)
             
             df.reset_index(inplace=True)
+        
+            # Fill missing values in numerical columns with mean
+            numerical_columns = df.select_dtypes(include=[np.number]).columns
+            if len(numerical_columns) > 0:
+                df[numerical_columns] = df[numerical_columns].fillna(df[numerical_columns].mean())
             
+            # Fill missing values in object columns with mode
+            object_columns = df.select_dtypes(include=['object']).columns
+            for col in object_columns:
+                mode_val = df[col].mode()
+                if not mode_val.empty:
+                    df[col] = df[col].fillna(mode_val[0])
+
         save_file(df, file)
         print(F.GREEN + f"[{get_time()}] Finished Removing Duplicates")
 
