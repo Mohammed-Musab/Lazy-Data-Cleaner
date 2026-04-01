@@ -35,29 +35,32 @@ def safe_w2n(series, cap=1000):
         print(F.YELLOW + f"[{get_time()}] Warning: Too many unique values, {len(unique_values)}.\nSkipping word to number conversion.")
         return series
     
+    # Cache for converted values
     cache = {}
 
+    # Loop through each unique value and try to convert it to a number
     for value in unique_values:
  
+        # Try to convert the value to a number
         try:
             # Convert the value to a number
-                with open(os.devnull, 'w') as f, \
-                     contextlib.redirect_stdout(f), \
-                     contextlib.redirect_stderr(f):
-
-                    cache[value] = w2n.word_to_num(value)
+            with open(os.devnull, 'w') as f, \
+                contextlib.redirect_stdout(f), \
+                contextlib.redirect_stderr(f):
+                cache[value] = w2n.word_to_num(value)
+        
+        # If conversion fails, keep the original value
         except:
-            # If conversion fails, keep the original value
             cache[value] = value
 
+    # Map the original series to the converted values
     return series.map(lambda x: cache.get(x, x))
 
 # Clean the nan
 def clean(x):
 
-    # Check if it definison of pandas empty
+    # If it is already nan return it
     if pd.isna(x): 
-        # If yes yes return numpy empty
         return np.nan
     
     # Remove any space (before/after)
@@ -83,32 +86,50 @@ def format_string_values(x):
 # Merging Columns
 def merging(df):
 
-    # Column name directory
-    normalized = {}  
-    to_merge = []  
+    # Normalize column names
+    df.columns = (
+        df.columns
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .str.replace(r'[\s\-]+', '_', regex=True)
+        .str.replace(r'_+', '_', regex=True)
+        .str.strip('_')
+    )
 
-    # For each column name
-    for column in df.columns:
-        normal = column.lower().replace(" ", "_").replace("-", "_")
-        if normal in normalized:
-            to_merge.append((normalized[normal], column))
+    # Group columns by their normalized names
+    grouped = {}
+
+    # Loop through each column and group them by their normalized names
+    for index, column in enumerate(df.columns):
+        grouped.setdefault(column, []).append(index)
+
+    # Create a new DataFrame to hold the merged columns
+    new_df = pd.DataFrame()
+
+    # Loop through each group of columns and merge them
+    for column, columnss in grouped.items():
+
+        # If there is only one column with this name, just copy it to the new DataFrame
+        if len(columnss) == 1:
+            new_df[column] = df.iloc[:, columnss[0]]
+        
+        # If there are multiple columns with this name, merge them and add the merged column to the new DataFrame
         else:
-            normalized[normal] = column
 
-    for target, source in to_merge:
-        left = df[target]
-        right = df[source]
+            # Start with the first column as the base for merging
+            merged = df.iloc[:, columnss[0]]
 
-        if isinstance(left, pd.DataFrame):
-            left = left.iloc[:, 0]
-        if isinstance(right, pd.DataFrame):
-            right = right.iloc[:, 0]
+            # Loop through the remaining columns and merge them with the base column
+            for index in columnss[1:]:
+                merged = merged.combine_first(df.iloc[:, index])
 
-        df[target] = left.where(left.notna(), right)
-        df = df.drop(columns=[source])
-        print(F.YELLOW + f"[{get_time()}] Merged '{source}' into '{target}'")
+            # Add the merged column to the new DataFrame and inform user about the merging process
+            new_df[column] = merged
+            print(F.YELLOW + f"[{get_time()}] Merged {columnss} into '{column}'")
 
-    return df
+    # Return the new DataFrame with merged columns
+    return new_df
 
 # Function - Copying Files
 def process_files(force_change_csv=False):
@@ -147,6 +168,7 @@ def process_files(force_change_csv=False):
 
         # Copying files to Data folder
         for i, file in enumerate(data, start=1):
+
             # Mute pandas error notification
             pd.set_option('future.no_silent_downcasting', True)
             
@@ -155,6 +177,19 @@ def process_files(force_change_csv=False):
             
             # Read the CSV file
             df = load_file(file)
+            
+            # Normalize column names
+            for column in df.columns:
+                if df[column].dtype == object and not is_numeric_like(df[column]):
+                    df[column] = (
+                        df[column]
+                        .astype(str)
+                        .str.strip()
+                        .str.lower()
+                        .str.replace(r'[^\w]+', '_', regex=True)
+                        .str.replace(r'_+', '_', regex=True)
+                        .str.strip('_')
+                    )
             
             # Clean the data
             for column in df.columns:

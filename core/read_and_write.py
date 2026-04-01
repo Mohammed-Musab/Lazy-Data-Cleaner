@@ -19,11 +19,11 @@ def load_file(path, **kwargs):
 
     # If extension is csv read it
     if extension == ".csv":
-        return pd.read_csv(path, **kwargs)
+        return pd.read_csv(path, index_col=None, **kwargs)
 
     # If extension is xlsx or xls read it
     elif extension in [".xlsx", ".xls"]:
-        return pd.read_excel(path, **kwargs)
+        return pd.read_excel(path, index_col=None, **kwargs)
 
     # Else return unspported file type issue
     else:

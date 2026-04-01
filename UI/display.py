@@ -2,8 +2,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-from core.processing import process_files
-
 """
 
 Green     : #003609
@@ -11,20 +9,25 @@ Red       : #3d0000
 
 """
 
+# Lazy Data Cleaner Class
 class LazyDataCleaner():
+
+    # Init Function
     def __init__(self, root):
+
         # Importing Libraries
         from datetime import datetime
 
         # Get current time
         self.current_time = datetime.now().strftime("%H:%M:%S")
+        
         # Main Root
         self.root = root
 
         # Create the main window
         self.root.title("Lazy Data Cleaner - PRERELEASE")
 
-        # Window size
+        # Window size and properties
         self.root.geometry("920x500")
         self.root.resizable(False, False)
         self.root.configure(bg="light grey")
@@ -35,6 +38,7 @@ class LazyDataCleaner():
 
         # Preset (defualt)
         self.preset = 1
+
         # Defualts Values for Customize
         self.mean                       = 0
         self.median                     = 0
@@ -50,11 +54,16 @@ class LazyDataCleaner():
         # Main Screen
         self.main_screen()
     
+    # Get Time Function
     def get_time(self):
+
+        # Get the Current Time
         from datetime import datetime
         return datetime.now().strftime("%H:%M:%S")
     
+    # Create Widgets
     def create_widgets(self):
+
         # Defualt Values For Buttons & Labels Size
         button_width            = 40
         button_height           = 2
@@ -75,6 +84,7 @@ class LazyDataCleaner():
             height=6,
             bd=0
         )
+
         # Label - Version
         self.version_label = tk.Label(
             self.mainframe,
@@ -86,6 +96,7 @@ class LazyDataCleaner():
             height=2,
             bd=0
         )
+
         # Button - Run
         self.run_button = tk.Button(
             self.mainframe,
@@ -100,6 +111,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Button - Restart
         self.restart_button = tk.Button(
             self.mainframe,
@@ -114,6 +126,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Button - Exit
         self.exit_button = tk.Button(
             self.mainframe,
@@ -128,6 +141,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Button - Settings
         self.settings_button = tk.Button(
             self.root,
@@ -140,6 +154,7 @@ class LazyDataCleaner():
             relief="flat",
             command=self.settings
         )
+
         # Button - Return
         self.return_button = tk.Button(
             self.root,
@@ -152,6 +167,7 @@ class LazyDataCleaner():
             relief="flat",
             command=self.returned
         )
+
         # Settings - Label - Output
         self.settings_label_output = tk.Label(
             self.mainframe,
@@ -179,6 +195,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Settings - Button - AI
         self.settings_button_AI = tk.Button(
             self.mainframe,
@@ -193,6 +210,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Settings - Button - Bussinses
         self.settings_button_bussinses = tk.Button(
             self.mainframe,
@@ -207,6 +225,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Settings - Button - Streaming
         self.settings_button_streaming = tk.Button(
             self.mainframe,
@@ -221,6 +240,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Settings - Button - Custom
         self.settings_button_custom = tk.Button(
             self.mainframe,
@@ -249,7 +269,8 @@ class LazyDataCleaner():
             bd=0,
             highlightthickness=0,
             relief="flat"
-            )
+        )
+
         # Customize - Button - Median
         self.customize_button_median = tk.Button(
             self.mainframe,
@@ -264,6 +285,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Customize - Button - Mode
         self.customize_button_mode = tk.Button(
             self.mainframe,
@@ -278,6 +300,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Customize - Button - Duplicates
         self.customize_button_duplicates = tk.Button(
             self.mainframe,
@@ -292,6 +315,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Customize - Button - Outlier
         self.customize_button_outlier = tk.Button(
             self.mainframe,
@@ -306,6 +330,7 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Customize - Button - Standardization
         self.customize_button_standardization = tk.Button(
             self.mainframe,
@@ -320,18 +345,19 @@ class LazyDataCleaner():
             highlightthickness=0,
             relief="flat"
         )
+
         # Customize - Button - Returned
         self.return_customize_button = tk.Button(
-                    self.root,
-                    text="Return",
-                    font=("Arial", 10, "bold"),
-                    bg="#95a5a6",
-                    fg="white",
-                    bd=0,
-                    highlightthickness=0,
-                    relief="flat",
-                    command=self.returned_custom
-                )
+            self.root,
+            text="Return",
+            font=("Arial", 10, "bold"),
+            bg="#95a5a6",
+            fg="white",
+            bd=0,
+            highlightthickness=0,
+            relief="flat",
+            command=self.returned_custom
+        )
         
         # Force save as csv
         self.force_csv_button = tk.Button(
@@ -360,7 +386,9 @@ class LazyDataCleaner():
             command=upload_file
         )
 
+    # Clear Frame
     def clear_frame(self):
+
         # Remove everything in screen
         for widget in self.mainframe.winfo_children():
             widget.grid_forget()
@@ -375,7 +403,9 @@ class LazyDataCleaner():
         # Restore background
         self.mainframe.configure(bg="light grey")
 
+    # Main Screen
     def main_screen(self):
+
         # Clear The Screen
         self.clear_frame()
 
@@ -385,7 +415,9 @@ class LazyDataCleaner():
         self.settings_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
         self.upload_file_button.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
 
+    # Preset Selection
     def preset_selection(self, value, text): 
+
         # Set New Preset
         self.preset = value
 
@@ -395,84 +427,61 @@ class LazyDataCleaner():
         # Update The Screen
         self.root.update()
 
+    # Customizable Selection
     def customizable_selection(self, value_1):
+
+        # Importing Libraries
         from colorama import Fore as F
-        # Change Values
-        if value_1 == 1:
-            if self.mean == 0:
-                self.mean = 1
-                self.customize_button_mean.config(bg="#003609")
-            elif self.mean == 1:
-                self.mean = 0
-                self.customize_button_mean.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 2:
-            if self.median == 0:
-                self.median = 1
-                self.customize_button_median.config(bg="#003609")
-            elif self.median == 1:
-                self.median = 0
-                self.customize_button_median.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 3:
-            if self.mode == 0:
-                self.mode = 1
-                self.customize_button_mode.config(bg="#003609")
-            elif self.mode == 1:
-                self.mode = 0
-                self.customize_button_mode.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 4:
-            if self.duplicates == 0:
-                self.duplicates = 1
-                self.customize_button_duplicates.config(bg="#003609")
-            elif self.duplicates == 1:
-                self.duplicates = 0
-                self.customize_button_duplicates.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 5:
-            if self.outlier == 0:
-                self.outlier = 1
-                self.customize_button_outlier.config(bg="#003609")
-            elif self.outlier == 1:
-                self.outlier = 0
-                self.customize_button_outlier.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 6:
-            if self.standardizations == 0:
-                self.standardizations = 1
-                self.customize_button_standardization.config(bg="#003609")
-            elif self.standardizations == 1:
-                self.standardizations = 0
-                self.customize_button_standardization.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
-        elif value_1 == 7:
-            if self.force_csv == 0:
-                self.force_csv = 1
-                self.force_csv_button.config(bg="#003609")
-            elif self.force_csv == 1:
-                self.force_csv = 0
-                self.force_csv_button.config(bg="#3d0000")
-            else:
-                print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
+
+        # Toggle Map
+        toggle_map = {
+        1: ("mean", self.customize_button_mean),
+        2: ("median", self.customize_button_median),
+        3: ("mode", self.customize_button_mode),
+        4: ("duplicates", self.customize_button_duplicates),
+        5: ("outlier", self.customize_button_outlier),
+        6: ("standardizations", self.customize_button_standardization),
+        7: ("force_csv", self.force_csv_button),
+        }
+
+        # Check if the value is in the toggle map
+        if value_1 not in toggle_map:
+            print(F.RED + f"[{self.get_time()}] Error: Invalid selection {value_1}")
+            return
+
+        # Get the attribute name and button from the toggle map
+        attribute_name, button = toggle_map[value_1]
+
+        # Get current value
+        current_value = getattr(self, attribute_name)
+    
+        # Toggle the value
+        if current_value in [0, 1]:
+
+            # Toggle the value and update the button color
+            new_value = 1 - current_value
+            setattr(self, attribute_name, new_value)
+            button.config(bg="#003609" if new_value == 1 else "#3d0000")
+        
+        # If the current value is not 0 or 1, print an error message
+        else:
+            print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
 
         # Update The Screen
         self.root.update()
 
+    # Run Function
     def run(self):
+
         # Clear Frame
         self.clear_frame()
 
         # Progress Bar
         self.progress_start()
 
+    # Progress Bar
     def progress_start(self):
+
         # Importing Libraries
         import threading
 
@@ -481,7 +490,7 @@ class LazyDataCleaner():
         self.loadingframe = tk.Frame(self.mainframe, bg="light grey")
         self.loadingframe.grid()
 
-        # Define Progress Bar
+        # Progress Bar
         self.progress_var = tk.IntVar()
         self.progress = ttk.Progressbar(
             self.loadingframe,
@@ -491,12 +500,14 @@ class LazyDataCleaner():
             maximum=100,
             variable=self.progress_var
         )
+
+        # Loading Label
         self.loading_label = tk.Label(
         self.loadingframe,
         text="Processing...",
         font=("Arial", 20, "bold"),
         bg="light grey"
-    )
+        )
 
         # Display 
         self.loading_label.grid(row=0, pady=20)
@@ -506,18 +517,24 @@ class LazyDataCleaner():
         thread = threading.Thread(target=self.main_function, args=(self.preset,), daemon=True)
         thread.start()
 
-    def rerun(self):        
+    # Rerun Function
+    def rerun(self):   
+
         # Clear Frame
         self.clear_frame()
 
         # Progress Bar
         self.progress_start()
     
+    # Exit Function
     def exit_function(self):
+
         # Exit The Program
         self.root.destroy()
     
+    # Settings Function
     def settings(self):
+
         # Clear Frame
         self.clear_frame()
 
@@ -532,17 +549,24 @@ class LazyDataCleaner():
         self.force_csv_button.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
         self.root.update()
     
-    def returned(self):      
+    # Returned Functions
+    def returned(self):  
+
         # Show Main Screen
         self.main_screen()
 
+    # Returned Custom Function
     def returned_custom(self):
+
         # Show Settings Screen
         self.settings()
 
+    # Customize Function
     def customize(self):
+
         # Set The Preset To Custom
         self.preset_selection(5, "Custom Settings Have Been Selected")
+        
         # Clear Frame
         self.clear_frame()
 
@@ -556,7 +580,9 @@ class LazyDataCleaner():
         self.return_customize_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
         self.root.update()
 
+    # Main Function
     def main_function(self, preset):
+
         # Importing Libraries
         from core.processing import process_files
         from colorama import Fore as F, init
@@ -564,31 +590,21 @@ class LazyDataCleaner():
         from core.presets import default, AI, bussinses, streaming
         from core.functions import fill_mean, fill_median, fill_mode, duplicate, outlier, standardization
 
+        # Initialize step and current for progress tracking
         self.step    = 2
         self.current = 0
 
-        if preset == 1:
+        # Preset Selected
+        if preset in [1, 2, 3, 4]:
             self.step += 1
-        elif preset == 2:
-            self.step += 1
-        elif preset == 3:
-            self.step += 1
-        elif preset == 4:
-            self.step += 1
-        elif preset == 5:
-            if self.mean == 1:
-                self.step += 1
-            if self.median == 1:
-                self.step += 1
-            if self.mode == 1:
-                self.step += 1
-            if self.duplicates == 1:
-                self.step += 1
-            if self.outlier == 1:
-                self.step += 1
-            if self.standardizations == 1:
-                self.step += 1
 
+        # If Custom Preset Selected, Calculate The Number Of Selected Options
+        elif preset == 5:
+            for option in [self.mean, self.median, self.mode, self.duplicates, self.outlier, self.standardizations]:
+                if option == 1:
+                    self.step += 1
+
+        # Step Done Function To Update Progress Bar
         def step_done():
                 self.current += 1
                 progress = int((self.current / self.step) * 100)
@@ -602,7 +618,7 @@ class LazyDataCleaner():
         step_done()
 
         # Getting Paths
-        base_directory = Path(__file__).resolve().parent.parent
+        base_directory = Path(__file__).resolve().parents[1]        ## Parent Folder Directory
         upload_directory = base_directory / "Data"
         data = []
         data.extend(upload_directory.glob("*.csv"))                 ## Add csv files to list
@@ -612,39 +628,37 @@ class LazyDataCleaner():
         # If no errors
         if success_process_csv:
 
-            # Preset Selected
-            if preset == 1:
-                default(data)
+            # Preset Functions Map
+            preset_funcions = {
+                1: default,
+                2: AI,
+                3: bussinses,
+                4: streaming
+            }
+
+            # If the preset is in the preset functions map, call the corresponding function and update progress
+            if preset in preset_funcions:
+                preset_funcions[preset](data)
                 step_done()
-            elif preset == 2:
-                AI(data)
-                step_done()
-            elif preset == 3:
-                bussinses(data)
-                step_done()
-            elif preset == 4:
-                streaming(data)
-                step_done()
+            
+            # If the preset is custom, call the selected functions and update progress for each function
             elif preset == 5:
-                if self.mean == 1:
-                    fill_mean(True, 5, data)
-                    step_done()
-                if self.median == 1:
-                    fill_median(True, 5, data)
-                    step_done()
-                if self.mode == 1:
-                    fill_mode(True, 5, data)
-                    step_done()
-                if self.duplicates == 1:
-                    duplicate(data)
-                    step_done()
-                if self.outlier == 1:
-                    outlier(data)
-                    step_done()
-                if self.standardizations == 1:
-                    standardization(data)
-                    step_done()
+                custom_functions = {
+                self.mean:                  lambda: fill_mean(True, 5, data),
+                self.median:                lambda: fill_median(True, 5, data),
+                self.mode:                  lambda: fill_mode(True, 5, data),
+                self.duplicates:            lambda: duplicate(data),
+                self.outlier:               lambda: outlier(data),
+                self.standardizations:      lambda: standardization(data)
+                }
+
+                # Loop through each selected option and call the corresponding function
+                for option, function in custom_functions.items():
+                    if option == 1:
+                        function()
+                        step_done()
                 
+            # If the preset value is invalid, print an error message and switch to default preset
             else:
                 self.get_time()
                 print(F.RED + f"[{self.get_time()}] Error In Presets Selection... Switching to Defualt")
@@ -652,7 +666,9 @@ class LazyDataCleaner():
                 self.step = 1
                 step_done()
 
+        # If there is an error in processing files, print the error message
         else: 
+
             # Print Current Time & The Errror Message 
             self.get_time()
             print(F.RED + f"[{self.get_time()}] {message_process_csv}")
@@ -662,7 +678,9 @@ class LazyDataCleaner():
         # Display End Screen
         self.root.after(0, self.end_screen)
 
+    # End Screen
     def end_screen(self):
+
         # Clear Frame
         self.clear_frame()
 
@@ -676,5 +694,8 @@ class LazyDataCleaner():
         # Update The Screen
         self.root.update()
 
+    # Update Progress
     def update_progress(self, value):
+
+        # Update the progress bar value
         self.root.after(0, self.progress_var.set, value)

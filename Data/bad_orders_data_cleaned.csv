@@ -1,12 +1,12 @@
-index,Order ID, order_id ,Customer Name,Age,Date,Amount ($),Currency,Country ,Product
-0,1.0,1.0,john_doe,27.0,2024/01/05,100.0,usd,Brunei,Widget_A
-1,2.0,2.0,Jane_Doe,25.0,05_01_2024,200.0,USD,BRN,Widget_B
-2,3.0,5.7,JOHN___DOE,27.0,2024_01_07,221.42857142857142,USD,brunei,Widget_A
-3,4.0,4.0,Ali_bin_Abu,28.666666666666668,2024/13/01,300.0,USD,Brunei,Widget_C
-4,5.0,5.0,jane_doe,25.0,2024_01_09,221.42857142857142,USD,Brunei_Darussalam,Widget_B
-5,5.0,5.0,JANE_DOE,25.0,2024_01_09,200.0,USD,Brunei,Widget_B
-6,6.0,6.0,Bob_Lee,40.0,01_10_24,221.42857142857142,USD,Malaysia,Widget_D
-7,7.0,7.0,Mary_Sue,28.666666666666668,2024/01/11,150.0,usd,MY,Widget_E
-8,5.2,8.0,John_Doe,27.0,2024_01_12,100.0,USD,Brunei,Widget_A
-9,9.0,9.0,John__Doe,27.0,2024_01_12,221.42857142857142,USD,Brunei,Widget_A
-10,10.0,10.0,Ali_bin_Abu,35.0,2024_31_01,500.0,usd,Brunei,Widget_F
+order_id,customer_name,age,date,amount_($),currency,country,product
+1.0,john_doe,27.0,2024_01_05,100.0,usd,brunei,widget_a
+2.0,jane_doe,,05_01_2024,200.0,,brn,widget_b
+3.0,john_doe,27.0,2024_01_07,,usd,brunei,widget_a
+4.0,ali_bin_abu,,2024_13_01,300.0,usd,brunei,widget_c
+5.0,jane_doe,25.0,2024_01_09,,usd,brunei_darussalam,widget_b
+5.0,jane_doe,25.0,2024_01_09,200.0,usd,,widget_b
+6.0,bob_lee,40.0,01_10_24,,usd,malaysia,widget_d
+7.0,mary_sue,,2024_01_11,150.0,usd,my,widget_e
+8.0,john_doe,27.0,2024_01_12,100.0,usd,brunei,widget_a
+9.0,john_doe,27.0,2024_01_12,,usd,brunei,widget_a
+10.0,ali_bin_abu,35.0,2024_31_01,500.0,usd,brunei,widget_f

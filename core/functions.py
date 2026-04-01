@@ -11,11 +11,16 @@ current_time = datetime.now().strftime("%H:%M:%S")
 # Reset Colorama
 init(autoreset=True)
 
+# Get Time Function
 def get_time():
+
+    # Get the Current Time
     return datetime.now().strftime("%H:%M:%S")
 
 # Standardization
 def standardization(data):
+
+    # Loop through each file in the data list
     for file in data:
 
         # Read file
@@ -35,6 +40,8 @@ def standardization(data):
 
 # Outlier
 def outlier(data):
+
+    # Loop through each file in the data list
     for file in data:
 
         # Read file
@@ -58,31 +65,52 @@ def outlier(data):
 
 # Duplicates
 def duplicate(data):
+
+    # Loop through each file in the data list
     for file in data:
 
+        # Read file
         df = load_file(file)
 
+        # Store the initial count of rows
         initial_count = len(df)
         df.drop_duplicates(inplace=True)
+
+        # Inform user that duplicates have been removed
         if len(df) < initial_count:
             print(F.YELLOW + f"[{get_time()}] Removed {initial_count - len(df)} exact duplicate rows.")
 
+        # Get the index labels
         if not df.empty:
+
+            # Get the index labels
             indexs = df.index.astype(str).tolist()
             normalized = {}
             to_remove = []
 
+            # Loop through the index labels to find duplicates
             for index_label in indexs:
+
                 # Correct Format
                 normal = index_label.lower().strip().replace(" ", "_").replace("-", "_")
 
+                # Check if the normalized index label already exist in the normalized dictionary, if exist, merge the two rows and mark the redundant row for deletion
                 if normal in normalized:
+                    
+                    # Get the main index label
                     main_index = normalized[normal]
+
                     # Inform User That Column Will Be Merged
                     print(F.RED + f"[{get_time()}] Duplicate Detected: '{index_label}' looks like '{main_index}'")
+                    
+                    # Merge the two rows and mark the redundant row for deletion
                     df.loc[main_index] = df.loc[main_index].combine_first(df.loc[index_label])
                     to_remove.append(index_label)
+
+                    # Inform user that the two rows have been merged
                     print(F.YELLOW + f"[{get_time()}] Merged '{index_label}' into '{main_index}'")
+                
+                # If not exist, add the normalized index label to the normalized dictionary
                 else:
                     normalized[normal] = index_label
 
@@ -90,6 +118,7 @@ def duplicate(data):
             if to_remove:
                 df.drop(index=to_remove, inplace=True)
             
+            # Reset the index after merging and deleting duplicates
             df.reset_index(inplace=True)
         
             # Fill missing values in numerical columns with mean
@@ -104,11 +133,14 @@ def duplicate(data):
                 if not mode_val.empty:
                     df[col] = df[col].fillna(mode_val[0])
 
+        # Save file and Inform user that duplicates have been removed
         save_file(df, file)
         print(F.GREEN + f"[{get_time()}] Finished Removing Duplicates")
 
 # Fill in missing data with mean
 def fill_mean(delete, na_threshold, data):
+
+    # Loop through each file in the data list
     for file in data:
 
         # Read file
@@ -117,6 +149,7 @@ def fill_mean(delete, na_threshold, data):
         # Get numerical columns
         numerical_columns = df.select_dtypes(include=['number']).columns
 
+        # Loop through each numerical column to fill in missing data
         for column in numerical_columns:
             
             # Calculate missing precentage
@@ -141,6 +174,8 @@ def fill_mean(delete, na_threshold, data):
 
 # Fill in missing data with median
 def fill_median(delete, na_threshold, data):
+
+    # Loop through each file in the data list
     for file in data:
 
         # Read File
@@ -149,6 +184,7 @@ def fill_median(delete, na_threshold, data):
         # Get numerical columns
         numerical_columns = df.select_dtypes(include=['number']).columns
 
+        # Loop through each numerical column to fill in missing data
         for column in numerical_columns:
 
             # Calculate missing precentage
@@ -173,6 +209,8 @@ def fill_median(delete, na_threshold, data):
 
 # Fill in missing data with mode
 def fill_mode(delete, na_threshold, data):
+
+    # Loop through each file in the data list
     for file in data:
 
         # Read File
@@ -181,6 +219,7 @@ def fill_mode(delete, na_threshold, data):
         # Get categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
 
+        # Loop through each categorical column to fill in missing data
         for column in categorical_columns:
 
             # Calculate missing precentage
