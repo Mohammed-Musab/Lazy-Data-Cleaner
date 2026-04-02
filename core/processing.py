@@ -177,6 +177,11 @@ def process_files(force_change_csv=False):
             
             # Read the CSV file
             df = load_file(file)
+
+            # Clean the data
+            for column in df.columns:
+                if df[column].dtype == object:
+                    df[column] = df[column].apply(clean)
             
             # Normalize column names
             for column in df.columns:
@@ -190,11 +195,6 @@ def process_files(force_change_csv=False):
                         .str.replace(r'_+', '_', regex=True)
                         .str.strip('_')
                     )
-            
-            # Clean the data
-            for column in df.columns:
-                if df[column].dtype == object:
-                    df[column] = df[column].apply(clean)
             
             # Convert numeric columns
             for column in df.columns:

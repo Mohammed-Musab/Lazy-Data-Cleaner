@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Upload File
 def upload_file():
-    # 
+    # Open a file dialog to select a file
     file_path = filedialog.askopenfilename(
         title="Select a file",
         filetypes=[
@@ -27,14 +27,16 @@ def upload_file():
     # Create Upload folder inside project
     upload_folder = base_directory / "Upload"
     upload_folder.mkdir(exist_ok=True)
-    file_path = Path(file_path).resolve(strict=True)
 
-    # Copy file
+    # Try to copy the selected file to the Upload folder and inform user about the result
     try:
+
+        # Copy the selected file to the Upload folder
+        file_path = Path(file_path).resolve(strict=True)
         destination = upload_folder / file_path.name
         shutil.copy(file_path, destination)
         messagebox.showinfo("Success", f"File uploaded to:\n{destination}")
     
-    #
+    # Handle exceptions
     except Exception as e:
         messagebox.showerror("Error", str(e))

@@ -13,8 +13,8 @@ def AI(data):
     duplicate(data)
     standardization(data)
 
-# Bussiness preset
-def bussinses(data):
+# Business preset
+def business(data):
     fill_mode(False, 5, data)
     duplicate(data)
 

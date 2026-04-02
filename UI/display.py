@@ -1,6 +1,8 @@
 # Importing Libraries
 import tkinter as tk
 from tkinter import ttk
+from colorama import Fore as F, init
+from pathlib import Path
 
 """
 
@@ -211,10 +213,10 @@ class LazyDataCleaner():
             relief="flat"
         )
 
-        # Settings - Button - Bussinses
-        self.settings_button_bussinses = tk.Button(
+        # Settings - Button - Business
+        self.settings_button_business = tk.Button(
             self.mainframe,
-            text="Bussinses",
+            text="Business",
             font=("Arial", 15, "bold"),
             bg="#005a8f",
             fg="white",
@@ -542,7 +544,7 @@ class LazyDataCleaner():
         self.settings_label_output.grid(row=1, column=0, sticky="ew")
         self.settings_button_defualt.grid(row=2, column=0, sticky="ew")
         self.settings_button_AI.grid(row=3, column=0, sticky="ew")
-        self.settings_button_bussinses.grid(row=4, column=0, sticky="ew")
+        self.settings_button_business.grid(row=4, column=0, sticky="ew")
         self.settings_button_streaming.grid(row=5, column=0, sticky="ew")
         self.settings_button_custom.grid(row=6, column=0, sticky="ew")
         self.return_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
@@ -585,13 +587,11 @@ class LazyDataCleaner():
 
         # Importing Libraries
         from core.processing import process_files
-        from colorama import Fore as F, init
-        from pathlib import Path
-        from core.presets import default, AI, bussinses, streaming
+        from core.presets import default, AI, business, streaming
         from core.functions import fill_mean, fill_median, fill_mode, duplicate, outlier, standardization
 
         # Initialize step and current for progress tracking
-        self.step    = 2
+        self.step    = 1
         self.current = 0
 
         # Preset Selected
@@ -600,9 +600,14 @@ class LazyDataCleaner():
 
         # If Custom Preset Selected, Calculate The Number Of Selected Options
         elif preset == 5:
-            for option in [self.mean, self.median, self.mode, self.duplicates, self.outlier, self.standardizations]:
-                if option == 1:
-                    self.step += 1
+            self.step += sum([
+                self.mean,
+                self.median,
+                self.mode,
+                self.duplicates,
+                self.outlier,
+                self.standardizations
+            ])
 
         # Step Done Function To Update Progress Bar
         def step_done():
@@ -632,7 +637,7 @@ class LazyDataCleaner():
             preset_funcions = {
                 1: default,
                 2: AI,
-                3: bussinses,
+                3: business,
                 4: streaming
             }
 
@@ -643,14 +648,14 @@ class LazyDataCleaner():
             
             # If the preset is custom, call the selected functions and update progress for each function
             elif preset == 5:
-                custom_functions = [
-                (self.mean,                  lambda: fill_mean(True, 5, data)),
-                (self.median,                lambda: fill_median(True, 5, data)),
-                (self.mode,                  lambda: fill_mode(True, 5, data)),
-                (self.duplicates,            lambda: duplicate(data)),
-                (self.outlier,               lambda: outlier(data)),
-                (self.standardizations,      lambda: standardization(data))
-                ]
+                custom_functions = {
+                    "mean": (self.mean, lambda: fill_mean(True, 5, data)),
+                    "median": (self.median, lambda: fill_median(True, 5, data)),
+                    "mode": (self.mode, lambda: fill_mode(True, 5, data)),
+                    "duplicates": (self.duplicates, lambda: duplicate(data)),
+                    "outlier": (self.outlier, lambda: outlier(data)),
+                    "standardizations": (self.standardizations, lambda: standardization(data))
+                    }
 
                 # Loop through each selected option and call the corresponding function
                 for option, function in custom_functions:
