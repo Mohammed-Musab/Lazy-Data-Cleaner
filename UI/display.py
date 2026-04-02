@@ -643,17 +643,17 @@ class LazyDataCleaner():
             
             # If the preset is custom, call the selected functions and update progress for each function
             elif preset == 5:
-                custom_functions = {
-                self.mean:                  lambda: fill_mean(True, 5, data),
-                self.median:                lambda: fill_median(True, 5, data),
-                self.mode:                  lambda: fill_mode(True, 5, data),
-                self.duplicates:            lambda: duplicate(data),
-                self.outlier:               lambda: outlier(data),
-                self.standardizations:      lambda: standardization(data)
-                }
+                custom_functions = [
+                (self.mean,                  lambda: fill_mean(True, 5, data)),
+                (self.median,                lambda: fill_median(True, 5, data)),
+                (self.mode,                  lambda: fill_mode(True, 5, data)),
+                (self.duplicates,            lambda: duplicate(data)),
+                (self.outlier,               lambda: outlier(data)),
+                (self.standardizations,      lambda: standardization(data))
+                ]
 
                 # Loop through each selected option and call the corresponding function
-                for option, function in custom_functions.items():
+                for option, function in custom_functions:
                     if option == 1:
                         function()
                         step_done()

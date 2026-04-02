@@ -22,7 +22,7 @@ def upload_file():
         return
 
     # Get absolute path of current script directory
-    base_directory = Path(__file__).resolve().parent[1]
+    base_directory = Path(__file__).resolve().parents[1]
 
     # Create Upload folder inside project
     upload_folder = base_directory / "Upload"
