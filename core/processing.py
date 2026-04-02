@@ -49,7 +49,7 @@ def safe_w2n(series, cap=1000):
                 cache[value] = w2n.word_to_num(value)
         
         # If conversion fails, keep the original value
-        except:
+        except (ValueError, AttributeError):
             cache[value] = value
 
     # Map the original series to the converted values
