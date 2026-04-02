@@ -21,8 +21,7 @@ def is_numeric_like(series, sample_size=100):
     series = series.dropna().astype(str).head(sample_size)
 
     # If more than 50% of values are digits or can be converted to a number
-    count_numeric = sum([v.replace('.', '', 1).isdigit() or v.replace('-', '', 1).isdigit() for v in series])
-    return count_numeric / max(len(series), 1) > 0.5
+    count_numeric = sum(1 for v in series if _is_numeric_str(v))
 
 # Convert word to number
 def safe_w2n(series, cap=1000):
