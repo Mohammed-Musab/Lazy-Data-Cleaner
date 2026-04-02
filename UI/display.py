@@ -658,8 +658,8 @@ class LazyDataCleaner():
                     }
 
                 # Loop through each selected option and call the corresponding function
-                for option, function in custom_functions:
-                    if option == 1:
+                for option_name, (flag, function) in custom_functions.items():
+                    if flag == 1:
                         function()
                         step_done()
                 
