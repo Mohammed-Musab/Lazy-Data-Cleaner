@@ -658,9 +658,9 @@ class LazyDataCleaner():
                     }
 
                 # Loop through each selected option and call the corresponding function
-                for option_name, (flag, function) in custom_functions.items():
-                    if flag == 1:
-                        function()
+                for is_selected, func in custom_functions:
+                    if is_selected:
+                        func()
                         step_done()
                 
             # If the preset value is invalid, print an error message and switch to default preset
