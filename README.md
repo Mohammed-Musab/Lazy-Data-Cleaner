@@ -8,6 +8,8 @@
 - `.xlsx`
 - `.xls`
 
+(More file fomats support might be added on request)
+
 # REQUIREMENTS
 
 ## System Requirements
