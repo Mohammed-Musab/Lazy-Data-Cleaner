@@ -397,7 +397,7 @@ class LazyDataCleaner():
             to=100,
             orient="horizontal",
             resolution=0.1,
-            label="Missing Threshold",
+            label="Missing Threshold (%)",
             length=300,
             bg="#2c3e50",
             fg="white",
@@ -424,6 +424,9 @@ class LazyDataCleaner():
             bd=0
         )
         
+        self.threadhold_slider.set(self.missing_threshold)
+        self.outlier_threadhold_slider.set(self.outlier_threshold)
+
     # Clear Frame
     def clear_frame(self):
 
