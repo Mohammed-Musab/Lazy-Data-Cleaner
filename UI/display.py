@@ -3,6 +3,11 @@ import tkinter as tk
 from tkinter import ttk
 from colorama import Fore as F, init
 from pathlib import Path
+from time import sleep as s
+from log import save_to_log
+
+# Waiting Time For Progress Bar
+waiting_time = 0.5
 
 """
 
@@ -50,18 +55,15 @@ class LazyDataCleaner():
         self.standardizations           = 0
         self.force_csv                  = 0
 
+        # Threshold Values
+        self.missing_threshold = 2.5
+        self.outlier_threshold = 3
+
         # Create all widgets
         self.create_widgets()
 
         # Main Screen
         self.main_screen()
-    
-    # Get Time Function
-    def get_time(self):
-
-        # Get the Current Time
-        from datetime import datetime
-        return datetime.now().strftime("%H:%M:%S")
     
     # Create Widgets
     def create_widgets(self):
@@ -90,7 +92,7 @@ class LazyDataCleaner():
         # Label - Version
         self.version_label = tk.Label(
             self.mainframe,
-            text="v0.4.4",
+            text="v0.4.5",
             font=("Arial", 20, "bold"),
             bg="#2c3e50",
             fg="white",
@@ -363,15 +365,15 @@ class LazyDataCleaner():
         
         # Force save as csv
         self.force_csv_button = tk.Button(
-                    self.root,
-                    text="Force csv save as files",
-                    font=("Arial", 10, "bold"),
-                    bg="#3d0000",
-                    fg="white",
-                    bd=0,
-                    highlightthickness=0,
-                    relief="flat",
-                    command=lambda: self.customizable_selection(7)
+            self.root,
+            text="Force csv save as files",
+            font=("Arial", 10, "bold"),
+            bg="#3d0000",
+            fg="white",
+            bd=0,
+            highlightthickness=0,
+            relief="flat",
+            command=lambda: self.customizable_selection(7)
         )
 
         # Upload File - Button
@@ -388,6 +390,40 @@ class LazyDataCleaner():
             command=upload_file
         )
 
+        # Slider - Preset Selection - Threadhold
+        self.threadhold_slider = tk.Scale(
+            self.mainframe,
+            from_=0,
+            to=100,
+            orient="horizontal",
+            resolution=0.1,
+            label="Missing Threshold",
+            length=300,
+            bg="#2c3e50",
+            fg="white",
+            troughcolor="#34495e",
+            activebackground="#005a8f",
+            highlightthickness=0,
+            bd=0
+        )
+
+        # Bar - Preset Selection - Outlier Threadhold
+        self.outlier_threadhold_slider = tk.Scale(
+            self.mainframe,
+            from_=1,
+            to=10,
+            orient="horizontal",
+            resolution=0.1,
+            label="Outlier Threshold",
+            length=300,
+            bg="#2c3e50",
+            fg="white",
+            troughcolor="#34495e",
+            activebackground="#005a8f",
+            highlightthickness=0,
+            bd=0
+        )
+        
     # Clear Frame
     def clear_frame(self):
 
@@ -448,7 +484,7 @@ class LazyDataCleaner():
 
         # Check if the value is in the toggle map
         if value_1 not in toggle_map:
-            print(F.RED + f"[{self.get_time()}] Error: Invalid selection {value_1}")
+            save_to_log("r", f"Error: Invalid selection {value_1}")
             return
 
         # Get the attribute name and button from the toggle map
@@ -465,9 +501,9 @@ class LazyDataCleaner():
             setattr(self, attribute_name, new_value)
             button.config(bg="#003609" if new_value == 1 else "#3d0000")
         
-        # If the current value is not 0 or 1, print an error message
+        # If the value is not 0 or 1, log an error message
         else:
-            print(F.RED + f"[{self.get_time()}] Error In Selection Changing To False")
+            save_to_log("r", f"Error: Invalid selection {value_1}")
 
         # Update The Screen
         self.root.update()
@@ -573,12 +609,14 @@ class LazyDataCleaner():
         self.clear_frame()
 
         # Display
-        self.customize_button_mean.grid(row=1, column=0, sticky="ew")
-        self.customize_button_median.grid(row=2, column=0, sticky="ew")
-        self.customize_button_mode.grid(row=3, column=0, sticky="ew")
-        self.customize_button_duplicates.grid(row=4, column=0, sticky="ew")
-        self.customize_button_outlier.grid(row=5, column=0, sticky="ew")
-        self.customize_button_standardization.grid(row=6, column=0, sticky="ew")
+        self.threadhold_slider.grid(row=1, column=0, sticky="ew")
+        self.outlier_threadhold_slider.grid(row=2, column=0, sticky="ew", pady=10)
+        self.customize_button_mean.grid(row=3, column=0, sticky="ew")
+        self.customize_button_median.grid(row=4, column=0, sticky="ew")
+        self.customize_button_mode.grid(row=5, column=0, sticky="ew")
+        self.customize_button_duplicates.grid(row=6, column=0, sticky="ew")
+        self.customize_button_outlier.grid(row=7, column=0, sticky="ew")
+        self.customize_button_standardization.grid(row=8, column=0, sticky="ew")
         self.return_customize_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
         self.root.update()
 
@@ -589,6 +627,10 @@ class LazyDataCleaner():
         from core.processing import process_files
         from core.presets import default, AI, business, streaming
         from core.functions import fill_mean, fill_median, fill_mode, duplicate, outlier, standardization
+
+        # Get Threshold Values
+        self.missing_threshold = self.threadhold_slider.get()
+        self.outlier_threshold = self.outlier_threadhold_slider.get()
 
         # Initialize step and current for progress tracking
         self.step    = 1
@@ -610,17 +652,19 @@ class LazyDataCleaner():
             ])
 
         # Step Done Function To Update Progress Bar
-        def step_done():
+        def step_done(information=""):
                 self.current += 1
+                self.loading_label.config(text=f"{information}... ({self.current}/{self.step})")
                 progress = int((self.current / self.step) * 100)
                 self.update_progress(progress)
+                s(waiting_time)
 
         # Reset Colorama
         init(autoreset=True)
 
         # Processing files
         success_process_csv, message_process_csv = process_files(bool(self.force_csv))
-        step_done()
+        step_done("File Formatting")
 
         # Getting Paths
         base_directory = Path(__file__).resolve().parents[1]        ## Parent Folder Directory
@@ -641,19 +685,30 @@ class LazyDataCleaner():
                 4: streaming
             }
 
+            preset_labels = {
+                1: "Default Cleaning Preset",
+                2: "AI Cleaning Preset",
+                3: "Business Cleaning Preset",
+                4: "Streaming Cleaning Preset"
+            }
+
+
             # If the preset is in the preset functions map, call the corresponding function and update progress
             if preset in preset_funcions:
+                for preset_label in preset_labels:
+                    if preset == preset_label:
+                        step_done(preset_labels[preset_label])
                 preset_funcions[preset](data)
-                step_done()
+                
             
             # If the preset is custom, call the selected functions and update progress for each function
             elif preset == 5:
                 custom_functions = {
-                    "mean": (self.mean, lambda: fill_mean(True, 5, data)),
-                    "median": (self.median, lambda: fill_median(True, 5, data)),
-                    "mode": (self.mode, lambda: fill_mode(True, 5, data)),
+                    "mean": (self.mean, lambda: fill_mean(True, self.missing_threshold, data)),
+                    "median": (self.median, lambda: fill_median(True, self.missing_threshold, data)),
+                    "mode": (self.mode, lambda: fill_mode(True, self.missing_threshold, data)),
                     "duplicates": (self.duplicates, lambda: duplicate(data)),
-                    "outlier": (self.outlier, lambda: outlier(data)),
+                    "outlier": (self.outlier, lambda: outlier(data, self.outlier_threshold)),
                     "standardizations": (self.standardizations, lambda: standardization(data))
                     }
 
@@ -661,24 +716,20 @@ class LazyDataCleaner():
                 for is_selected, func in custom_functions:
                     if is_selected:
                         func()
-                        step_done()
+                        step_done("Custom Preset, " + is_selected)
                 
-            # If the preset value is invalid, print an error message and switch to default preset
+            # If the preset is not recognized, log an error message and switch to default preset
             else:
-                self.get_time()
-                print(F.RED + f"[{self.get_time()}] Error In Presets Selection... Switching to Defualt")
+                save_to_log("r", f"Error In Presets Selection... Switching to Defualt")
                 default(data)
                 self.step = 1
-                step_done()
+                step_done("Default Cleaning Preset... Due To An Error In Preset Selection")
 
-        # If there is an error in processing files, print the error message
+        # If there was an error in processing files, log the error message and switch to default preset
         else: 
-
-            # Print Current Time & The Errror Message 
-            self.get_time()
-            print(F.RED + f"[{self.get_time()}] {message_process_csv}")
+            save_to_log("r", f"{message_process_csv}")
             self.step = 1
-            step_done()
+            step_done("Default Cleaning Preset... Due To An Error In Preset Selection")
 
         # Display End Screen
         self.root.after(0, self.end_screen)

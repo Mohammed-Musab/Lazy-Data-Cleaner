@@ -1,17 +1,14 @@
 # Importing Librarie(s)
 import pandas as pd
 from pathlib import Path
-from colorama import Fore as F, init
-from datetime import datetime
 from word2number import w2n
 import numpy as np
 from .read_and_write import load_file, save_file
 import contextlib, os
+from log import save_to_log
+from datetime import datetime
 
-# Reset Colorama
-init(autoreset=True)
-
-# Time Display
+# Get Current Time
 def get_time():
     return datetime.now().strftime("%H:%M:%S")
 
@@ -32,7 +29,7 @@ def safe_w2n(series, cap=1000):
 
     # Check if the number of unique values >= cap
     if len(unique_values) >= cap:
-        print(F.YELLOW + f"[{get_time()}] Warning: Too many unique values, {len(unique_values)}.\nSkipping word to number conversion.")
+        save_to_log("y", f"Warning: Too many unique values, {len(unique_values)}.\nSkipping word to number conversion.")
         return series
     
     # Cache for converted values
@@ -126,7 +123,7 @@ def merging(df):
 
             # Add the merged column to the new DataFrame and inform user about the merging process
             new_df[column] = merged
-            print(F.YELLOW + f"[{get_time()}] Merged {columnss} into '{column}'")
+            save_to_log("y", f"Merged {columnss} into '{column}'")
 
     # Return the new DataFrame with merged columns
     return new_df
@@ -135,7 +132,7 @@ def merging(df):
 def process_files(force_change_csv=False):
     
     # Notify user that process started
-    print(F.GREEN + f"[{get_time()}] Processing started...")
+    save_to_log("g", "Processing started...")
 
     # Getting (Paths)
     base_directory = Path(__file__).resolve().parents[1]         ## Parent Folder Directory
@@ -152,7 +149,7 @@ def process_files(force_change_csv=False):
     if not data:
 
         # Inform user that system had found no file(s)!
-        print(F.RED + f"[{get_time()}] Error: No file have been found!")
+        save_to_log("r", "Error: No file have been found!")
 
         # Retrun Error
         return False, f"[{get_time()}] Error: No file have been found!"
@@ -161,7 +158,7 @@ def process_files(force_change_csv=False):
     else:
         
         # Inform user that system had found a file(s)!
-        print(F.GREEN + f"[{get_time()}] File(s) have been found!")
+        save_to_log("g", "File(s) have been found!")
 
         # Copied files list
         copied_files = []
@@ -227,7 +224,7 @@ def process_files(force_change_csv=False):
                 save_file(df, new_name)
 
             # Inform user that system had processed a copy of the file
-            print(F.GREEN + f"[{get_time()}] Processed a copy for file located in {new_name}")
+            save_to_log("g", f"Processed a copy for file located in {new_name}")
             copied_files.append(new_name)
 
 

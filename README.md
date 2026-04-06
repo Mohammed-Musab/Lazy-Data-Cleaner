@@ -56,6 +56,10 @@ Instead:
 
 This ensures your original data always remains unchanged.
 
+# FORCE CSV
+
+Added the option to save files as `.csv` file format.
+
 # APPLICATION SCREENS
 
 ## Starting Screen
