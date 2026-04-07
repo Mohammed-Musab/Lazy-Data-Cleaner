@@ -1,21 +1,9 @@
 # Importing Libraries
 import pandas as pd
-from datetime import datetime
-from colorama import init, Fore as F
 import numpy as np
 from scipy import stats
 from .read_and_write import load_file, save_file
-
-# Get Current Time
-current_time = datetime.now().strftime("%H:%M:%S")
-# Reset Colorama
-init(autoreset=True)
-
-# Get Time Function
-def get_time():
-
-    # Get the Current Time
-    return datetime.now().strftime("%H:%M:%S")
+from log import save_to_log
 
 # Standardization
 def standardization(data):
@@ -36,10 +24,10 @@ def standardization(data):
         save_file(df, file)
 
         # Infrom user that standardization have finished
-        print(F.GREEN + f"[{get_time()}] Applied standardization for '{file}'.")
+        save_to_log("g", f"Applied standardization for '{file}'.")
 
 # Outlier
-def outlier(data):
+def outlier(data, threshold=3):
 
     # Loop through each file in the data list
     for file in data:
@@ -52,7 +40,6 @@ def outlier(data):
         
         # Calculate Z-score
         z_scores = np.abs(stats.zscore(df[numerical_columns]))
-        threshold = 3
 
         # Remove the outlier
         df_clean = df[(z_scores < threshold).all(axis=1)]
@@ -61,7 +48,7 @@ def outlier(data):
         save_file(df_clean, file)
 
         # Infrom user that outlier have been removed
-        print(F.GREEN + f"[{get_time()}] Removed outliers for '{file}'.")
+        save_to_log("g", f"Removed outliers for '{file}'.")
 
 # Duplicates
 def duplicate(data):
@@ -78,7 +65,7 @@ def duplicate(data):
 
         # Inform user that duplicates have been removed
         if len(df) < initial_count:
-            print(F.YELLOW + f"[{get_time()}] Removed {initial_count - len(df)} exact duplicate rows.")
+            save_to_log("y", f"Removed {initial_count - len(df)} exact duplicate rows.")
 
         # Get the index labels
         if not df.empty:
@@ -101,14 +88,14 @@ def duplicate(data):
                     main_index = normalized[normal]
 
                     # Inform User That Column Will Be Merged
-                    print(F.RED + f"[{get_time()}] Duplicate Detected: '{index_label}' looks like '{main_index}'")
+                    save_to_log("r", f"Duplicate Detected: '{index_label}' looks like '{main_index}'")
                     
                     # Merge the two rows and mark the redundant row for deletion
                     df.loc[main_index] = df.loc[main_index].combine_first(df.loc[index_label])
                     to_remove.append(index_label)
 
                     # Inform user that the two rows have been merged
-                    print(F.YELLOW + f"[{get_time()}] Merged '{index_label}' into '{main_index}'")
+                    save_to_log("y", f"Merged '{index_label}' into '{main_index}'")
                 
                 # If not exist, add the normalized index label to the normalized dictionary
                 else:
@@ -123,10 +110,10 @@ def duplicate(data):
 
         # Save file and Inform user that duplicates have been removed
         save_file(df, file)
-        print(F.GREEN + f"[{get_time()}] Finished Removing Duplicates")
+        save_to_log("g", "Finished Removing Duplicates")
 
 # Fill in missing data with mean
-def fill_mean(delete, na_threshold, data):
+def fill_mean(delete, na_threshold=30, data=[]):
 
     # Loop through each file in the data list
     for file in data:
@@ -145,23 +132,23 @@ def fill_mean(delete, na_threshold, data):
 
             # Check if there is no missing data
             if na_precentage == 0:
-                print(F.YELLOW + f"[{get_time()}] No missing data for {column}")
+                save_to_log("y", f"No missing data for {column}")
 
             # If prcentage of missing data is less than missing data threshold and user allowed deleting data, drop missing rows
             elif na_threshold >= na_precentage and delete:
                 df = df.dropna(subset=[column])
-                print(F.GREEN + f"[{get_time()}] Dropped missing data for {column}.")
+                save_to_log("g", f"Dropped missing data for {column}.")
 
             # If prcentage of missing data is greater than missing data threshold, fill in missing data
             elif na_threshold <= na_precentage:
                 df[column] = df[column].fillna(df[column].mean())
-                print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with mean.")
+                save_to_log("g", f"Missing data in column {column} filled with mean.")
         
         # Save File
         save_file(df, file)
 
 # Fill in missing data with median
-def fill_median(delete, na_threshold, data):
+def fill_median(delete, na_threshold=30, data=[]):
 
     # Loop through each file in the data list
     for file in data:
@@ -180,23 +167,23 @@ def fill_median(delete, na_threshold, data):
 
             # Check if there is no missing data
             if na_precentage == 0:
-                print(F.YELLOW + f"[{get_time()}] No missing data for {column}")
+                save_to_log("y", f"No missing data for {column}")
 
             # If prcentage of missing data is less than missing data threshold and user allowed deleting data, drop missing rows
             elif na_threshold >= na_precentage and delete:
                 df = df.dropna(subset=[column])
-                print(F.GREEN + f"[{get_time()}] Dropped missing data for {column}.")
+                save_to_log("g", f"Dropped missing data for {column}.")
 
             # If prcentage of missing data is greater than missing data threshold, fill in missing data
             elif na_threshold <= na_precentage:
                 df[column] = df[column].fillna(df[column].median())
-                print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with median.")
+                save_to_log("g", f"Missing data in column {column} filled with median.")
         
         # Save File
         save_file(df, file)
 
 # Fill in missing data with mode
-def fill_mode(delete, na_threshold, data):
+def fill_mode(delete,  na_threshold=30, data=[]):
 
     # Loop through each file in the data list
     for file in data:
@@ -215,17 +202,17 @@ def fill_mode(delete, na_threshold, data):
 
             # Check if there is no missing data
             if na_precentage == 0:
-                print(F.YELLOW + f"[{get_time()}] No missing data for {column}")
+                save_to_log("y", f"No missing data for {column}")
 
             # If prcentage of missing data is less than missing data threshold and user allowed deleting data, drop missing rows
             elif na_threshold >= na_precentage and delete:
                 df = df.dropna(subset=[column])
-                print(F.GREEN + f"[{get_time()}] Dropped missing data for {column}.")
+                save_to_log("g", f"Dropped missing data for {column}.")
 
             # If prcentage of missing data is greater than missing data threshold, fill in missing data 
             elif na_threshold <= na_precentage:
                 df[column] = df[column].fillna(df[column].mode()[0])
-                print(F.GREEN + f"[{get_time()}] Missing data in column {column} filled with mode.")
+                save_to_log("g", f"Missing data in column {column} filled with mode.")
 
         # Save file
         save_file(df, file)

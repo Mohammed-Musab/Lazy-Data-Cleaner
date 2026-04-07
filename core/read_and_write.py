@@ -3,10 +3,7 @@ import pandas as pd
 import os
 from pathlib import Path
 from datetime import datetime
-from colorama import Fore as F, init
-
-# Reset Colorama
-init(autoreset=True)
+from log import save_to_log
 
 # Time Display
 def get_time():
@@ -58,4 +55,4 @@ def save_file(df, filename, force_csv=False, **kwargs):
         raise ValueError(f"[{get_time()}] Unsupported file type: {extension}")
     
     # Inform user that file have been save in this location
-    print(F.GREEN + f"[{get_time()}] File saved to: {output_path}")
+    save_to_log("g", f"File saved to: {output_path}")
