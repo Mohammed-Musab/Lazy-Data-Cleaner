@@ -146,7 +146,7 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to:
 
-- **@Atesthecoder** - for designing interface the **initial GUI interface**.
+- **`@Atesthecoder`** - for designing the **initial GUI interface**.
 
 - **@Qoyyuum** - for testing the code and giving feedback throughout the journey.
 
