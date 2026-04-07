@@ -43,10 +43,10 @@ class LazyDataCleaner():
         self.mainframe = tk.Frame(root)
         self.mainframe.place(relx=0.5, rely=0.5, anchor="center")
 
-        # Preset (defualt)
+        # Preset (default)
         self.preset = 1
 
-        # Defualts Values for Customize
+        # Default Values for Customize
         self.mean                       = 0
         self.median                     = 0
         self.mode                       = 0
@@ -68,7 +68,7 @@ class LazyDataCleaner():
     # Create Widgets
     def create_widgets(self):
 
-        # Defualt Values For Buttons & Labels Size
+        # Default Values For Buttons & Labels Size
         button_width            = 40
         button_height           = 2
         button_settings_width   = 10
@@ -185,10 +185,10 @@ class LazyDataCleaner():
             bd=0
         )
 
-        # Settings - Button - Defualt
-        self.settings_button_defualt = tk.Button(
+        # Settings - Button - Default
+        self.settings_button_default = tk.Button(
             self.mainframe,
-            text=" Defualt ",
+            text=" Default ",
             font=("Arial", 15, "bold"),
             bg="#005a8f",
             fg="white",
@@ -390,8 +390,8 @@ class LazyDataCleaner():
             command=upload_file
         )
 
-        # Slider - Preset Selection - Threadhold
-        self.threadhold_slider = tk.Scale(
+        # Slider - Preset Selection - Threshold
+        self.threshold_slider = tk.Scale(
             self.mainframe,
             from_=0,
             to=100,
@@ -407,8 +407,8 @@ class LazyDataCleaner():
             bd=0
         )
 
-        # Bar - Preset Selection - Outlier Threadhold
-        self.outlier_threadhold_slider = tk.Scale(
+        # Bar - Preset Selection - Outlier Threshold
+        self.outlier_threshold_slider = tk.Scale(
             self.mainframe,
             from_=1,
             to=10,
@@ -424,8 +424,8 @@ class LazyDataCleaner():
             bd=0
         )
         
-        self.threadhold_slider.set(self.missing_threshold)
-        self.outlier_threadhold_slider.set(self.outlier_threshold)
+        self.threshold_slider.set(self.missing_threshold)
+        self.outlier_threshold_slider.set(self.outlier_threshold)
 
     # Clear Frame
     def clear_frame(self):
@@ -581,7 +581,7 @@ class LazyDataCleaner():
 
         # Display
         self.settings_label_output.grid(row=1, column=0, sticky="ew")
-        self.settings_button_defualt.grid(row=2, column=0, sticky="ew")
+        self.settings_button_default.grid(row=2, column=0, sticky="ew")
         self.settings_button_AI.grid(row=3, column=0, sticky="ew")
         self.settings_button_business.grid(row=4, column=0, sticky="ew")
         self.settings_button_streaming.grid(row=5, column=0, sticky="ew")
@@ -612,8 +612,8 @@ class LazyDataCleaner():
         self.clear_frame()
 
         # Display
-        self.threadhold_slider.grid(row=1, column=0, sticky="ew")
-        self.outlier_threadhold_slider.grid(row=2, column=0, sticky="ew", pady=10)
+        self.threshold_slider.grid(row=1, column=0, sticky="ew")
+        self.outlier_threshold_slider.grid(row=2, column=0, sticky="ew", pady=10)
         self.customize_button_mean.grid(row=3, column=0, sticky="ew")
         self.customize_button_median.grid(row=4, column=0, sticky="ew")
         self.customize_button_mode.grid(row=5, column=0, sticky="ew")
@@ -632,8 +632,8 @@ class LazyDataCleaner():
         from core.functions import fill_mean, fill_median, fill_mode, duplicate, outlier, standardization
 
         # Get Threshold Values
-        self.missing_threshold = self.threadhold_slider.get()
-        self.outlier_threshold = self.outlier_threadhold_slider.get()
+        self.missing_threshold = self.threshold_slider.get()
+        self.outlier_threshold = self.outlier_threshold_slider.get()
 
         # Initialize step and current for progress tracking
         self.step    = 1
@@ -716,14 +716,14 @@ class LazyDataCleaner():
                     }
 
                 # Loop through each selected option and call the corresponding function
-                for is_selected, func in custom_functions:
+                for is_selected, func in custom_functions.values():
                     if is_selected:
                         func()
                         step_done("Custom Preset, " + is_selected)
                 
             # If the preset is not recognized, log an error message and switch to default preset
             else:
-                save_to_log("r", f"Error In Presets Selection... Switching to Defualt")
+                save_to_log("r", f"Error In Presets Selection... Switching to Default")
                 default(data)
                 self.step = 1
                 step_done("Default Cleaning Preset... Due To An Error In Preset Selection")

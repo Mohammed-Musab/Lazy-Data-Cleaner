@@ -8,7 +8,7 @@
 - `.xlsx`
 - `.xls`
 
-(More file fomats support might be added on request)
+(More file formats support might be added on request)
 
 # REQUIREMENTS
 
@@ -60,7 +60,7 @@ This ensures your original data always remains unchanged.
 
 # FORCE CSV
 
-Added the option to save files as `.csv` file format.
+Added option to force save all output files as `.csv` format, **regardless** of input format.
 
 # APPLICATION SCREENS
 
@@ -124,7 +124,17 @@ At the moment, the program provides **five cleaning presets**:
 
 Allows users to manually select cleaning operations through a configuration menu.
 
-Custom threshold configuration is **now implemented**.
+# CUSTOM THRESHOLDS
+
+When using the **Custom** preset, you can configure:
+
+- **Missing Threshold (%)** - Columns with missing (**`%`**) above this value will be filled (or dropped if delete mode is enabled)
+
+- **Outlier Threshold (Z-score)** - Values with Z-score above this threshold are removed (*default: 3*)
+
+# LOGGING
+
+All processing output is automatically saved to the `Logs` folder as `YYYY-MM-DD-log-N.txt`. These logs help with debugging and tracking what changes were made to your data. 
 
 # DEVELOPMENT STATUS
 
@@ -136,7 +146,7 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to:
 
-- **@Atesthecoder** - for designing interface the **initial GUI**.
+- **@Atesthecoder** - for designing interface the **initial GUI interface**.
 
 - **@Qoyyuum** - for testing the code and giving feedback throughout the journey.
 
