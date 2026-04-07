@@ -716,10 +716,10 @@ class LazyDataCleaner():
                     }
 
                 # Loop through each selected option and call the corresponding function
-                for is_selected, func in custom_functions.values():
+                for key, (is_selected, func) in custom_functions.items():
                     if is_selected:
                         func()
-                        step_done("Custom Preset, " + is_selected)
+                        step_done("Custom Preset, " + key)
                 
             # If the preset is not recognized, log an error message and switch to default preset
             else:
