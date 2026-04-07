@@ -124,7 +124,7 @@ At the moment, the program provides **five cleaning presets**:
 
 Allows users to manually select cleaning operations through a configuration menu.
 
-Custom threshold configuration is **not yet available**.
+Custom threshold configuration is **now implemented**.
 
 # DEVELOPMENT STATUS
 
