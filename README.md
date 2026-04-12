@@ -40,9 +40,7 @@ Install dependencies using:
 
 4. The cleaned dataset will be saved in the **`Data`** folder.
 
-The console window (**`cmd`**) will display processing logs.
-
-**Do not close the console while the program is running.**
+To open log window press **`` ` ``** and it will open another window that refreshes every second.
 
 # ABOUT FILE PROCESSING
 
@@ -83,6 +81,10 @@ Added option to force save all output files as `.csv` format, **regardless** of 
 ## End Screen
 
 ![](Images/End.png)
+
+## Log Screen
+
+![](Images/Log.png)
 
 **All Screens are accessible within the application.**
 
@@ -134,7 +136,9 @@ When using the **Custom** preset, you can configure:
 
 # LOGGING
 
-All processing output is automatically saved to the `Logs` folder as `YYYY-MM-DD-log-N.txt`. These logs help with debugging and tracking what changes were made to your data. 
+All processing output is automatically saved to the `Logs` folder as `YYYY-MM-DD-log-N.txt` (`year-month-day-log-number`).
+
+These logs help with debugging and tracking what changes were made to your data. 
 
 # DEVELOPMENT STATUS
 
@@ -146,7 +150,7 @@ Features, presets, and workflows may change in future releases.
 
 Special thanks to:
 
-- **`@Atesthecoder`** - for designing the **initial GUI interface**.
+- **@Atesthecoder** - for designing the **initial GUI interface**.
 
 - **@Qoyyuum** - for testing the code and giving feedback throughout the journey.
 

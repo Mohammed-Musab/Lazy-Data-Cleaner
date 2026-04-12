@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 from .read_and_write import load_file, save_file
-from log import save_to_log
+from core.log import save_to_log
 
 # Standardization
 def standardization(data):
@@ -106,7 +106,7 @@ def duplicate(data):
                 df.drop(index=to_remove, inplace=True)
             
             # Reset the index after merging and deleting duplicates
-            df.reset_index(inplace=True)
+            df.reset_index(drop=True, inplace=True)
 
         # Save file and Inform user that duplicates have been removed
         save_file(df, file)

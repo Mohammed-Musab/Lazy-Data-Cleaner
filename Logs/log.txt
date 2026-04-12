@@ -1,1 +1,2 @@
-Here where logs get saved!
+Here where logs get saved,
+You can safely delete this file

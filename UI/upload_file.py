@@ -1,7 +1,6 @@
 # Importing Libraries
 from tkinter import filedialog, messagebox
 import shutil
-import os
 from pathlib import Path
 
 # Upload File

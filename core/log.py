@@ -1,10 +1,6 @@
 # Import Libraries
-from colorama import Fore as F, init
 from datetime import datetime
 import os
-
-# Reset Colorama
-init(autoreset=True)
 
 # Time Functions
 def get_time():
@@ -36,6 +32,8 @@ def get_log_filename():
         
         n += 1
 
+global log_filename
+
 # Get the log filename
 log_filename = get_log_filename()
 
@@ -43,17 +41,18 @@ log_filename = get_log_filename()
 def save_to_log(color="", message=""):
 
     color = color.lower()
+    current_message = ""
 
     # Print the message with the corresponding color based on the indicator - will be replaced in future
-    if color == "g" or color == "green":
-        print(F.GREEN + f"[{get_time()}] {message}")
-    elif color == "y" or color == "yellow":
-        print(F.YELLOW + f"[{get_time()}] {message}")
-    elif color == "r" or color == "red":
-        print(F.RED + f"[{get_time()}] {message}")
+    if color == "g":
+        current_message = (f"[{get_time()}] Success: {message}")
+    elif color == "y":
+        current_message = (f"[{get_time()}] Warning: {message}")
+    elif color == "r":
+        current_message = (f"[{get_time()}] Error: {message}")
     else:
-        print(f"[{get_time()}] {message}")
+        current_message = (f"[{get_time()}] Info: {message}")
 
     # Save the message to a log file with the current time as the name
     with open(f"{log_filename}", "a") as log_file:
-        log_file.write(f"[{get_time()}] {message}\n")
+        log_file.write(current_message + "\n")
