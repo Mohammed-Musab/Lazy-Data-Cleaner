@@ -61,7 +61,7 @@ def duplicate(data):
 
         # Store the initial count of rows
         initial_count = len(df)
-        df.drop_duplicates(inplace=True)
+        df.drop_duplicates(drop=True, inplace=True)
 
         # Inform user that duplicates have been removed
         if len(df) < initial_count:
@@ -106,7 +106,7 @@ def duplicate(data):
                 df.drop(index=to_remove, inplace=True)
             
             # Reset the index after merging and deleting duplicates
-            df.reset_index(inplace=True)
+            df.reset_index(drop=True, inplace=True)
 
         # Save file and Inform user that duplicates have been removed
         save_file(df, file)
