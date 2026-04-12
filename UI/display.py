@@ -1,13 +1,16 @@
 # Importing Libraries
 import tkinter as tk
 from tkinter import ttk
-from colorama import Fore as F, init
 from pathlib import Path
 from time import sleep as s
-from log import save_to_log
+from tkinter import scrolledtext
+from core.log import save_to_log
 
 # Waiting Time For Progress Bar
-waiting_time = 0.5
+waiting_time = 0.25
+
+# Version Name
+version = "v0.4.6"
 
 """
 
@@ -25,6 +28,9 @@ class LazyDataCleaner():
         # Importing Libraries
         from datetime import datetime
 
+        # Log Refresh
+        save_to_log("g", "Running log...")
+
         # Get current time
         self.current_time = datetime.now().strftime("%H:%M:%S")
         
@@ -32,7 +38,7 @@ class LazyDataCleaner():
         self.root = root
 
         # Create the main window
-        self.root.title("Lazy Data Cleaner - PRERELEASE")
+        self.root.title(f"Lazy Data Cleaner - {version}")
 
         # Window size and properties
         self.root.geometry("920x500")
@@ -42,6 +48,13 @@ class LazyDataCleaner():
         # Main frame - center
         self.mainframe = tk.Frame(root)
         self.mainframe.place(relx=0.5, rely=0.5, anchor="center")
+
+        # Remove the old keyboard_input call and set up Tkinter bindings
+        self.setup_bindings()
+
+        # Log viewer state
+        self.log_viewer_window = None
+        self.log_update_job = None
 
         # Preset (default)
         self.preset = 1
@@ -92,7 +105,7 @@ class LazyDataCleaner():
         # Label - Version
         self.version_label = tk.Label(
             self.mainframe,
-            text="v0.4.5",
+            text=version,
             font=("Arial", 20, "bold"),
             bg="#2c3e50",
             fg="white",
@@ -662,9 +675,6 @@ class LazyDataCleaner():
                 self.update_progress(progress)
                 s(waiting_time)
 
-        # Reset Colorama
-        init(autoreset=True)
-
         # Processing files
         success_process_csv, message_process_csv = process_files(bool(self.force_csv))
         step_done("File Formatting")
@@ -758,3 +768,99 @@ class LazyDataCleaner():
 
         # Update the progress bar value
         self.root.after(0, self.progress_var.set, value)
+
+    # Setup Bindings Keys
+    def setup_bindings(self):
+
+        # Importing Libraries
+        from core.keyboard import exit_key, log_toggle
+
+        # Bind Exit Key
+        exit_key(self.root, self.exit_function)
+
+        # Bind Log Toggle Key
+        log_toggle(self.root, self.toggle_log_window)
+    
+    # Toggle Log Window
+    def toggle_log_window(self):
+
+        # If the log viewer window exists and is open, close it
+        if self.log_viewer_window and self.log_viewer_window.winfo_exists():
+            self.close_log_viewer()
+        
+        # Otherwise, open the log viewer window
+        else:
+            self.open_log_viewer()
+    
+    # Open Log Viewer
+    def open_log_viewer(self):
+
+        # Create a new Toplevel window for the log viewer
+        self.log_viewer_window = tk.Toplevel(self.root)
+        self.log_viewer_window.title("Log Viewer")
+        self.log_viewer_window.geometry("700x400")
+        self.log_viewer_window.protocol("WM_DELETE_WINDOW", self.close_log_viewer)
+
+        # Text widget with scrollbar
+        text_frame = tk.Frame(self.log_viewer_window)
+        text_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Create a scrolled text widget for displaying logs
+        self.log_text = scrolledtext.ScrolledText(
+            text_frame,
+            wrap=tk.WORD,
+            font=("Consolas", 10),
+            state=tk.DISABLED
+        )
+
+        # Pack the text widget to fill the window
+        self.log_text.pack(fill=tk.BOTH, expand=True)
+
+        # Load initial content
+        self.refresh_log_viewer()
+
+        # Schedule periodic updates (every 1000 ms)
+        self.schedule_log_update()
+    
+    # Close Log Viewer
+    def close_log_viewer(self):
+
+        # Cancel any scheduled log updates
+        if self.log_update_job:
+            self.root.after_cancel(self.log_update_job)
+            self.log_update_job = None
+
+        # Destroy the log viewer window if it exists
+        if self.log_viewer_window and self.log_viewer_window.winfo_exists():
+            self.log_viewer_window.destroy()
+            self.log_viewer_window = None
+    
+    # Schedule Log Update
+    def schedule_log_update(self):
+
+        # If the log viewer window exists and is open, update the logs every second
+        if self.log_viewer_window and self.log_viewer_window.winfo_exists():
+            self.refresh_log_viewer()
+            self.log_update_job = self.root.after(1000, self.schedule_log_update)
+
+    # Refresh Log Viewer  
+    def refresh_log_viewer(self):
+
+        # Importing Libraries
+        from core.log import log_filename
+
+        # Read the log file content
+        try:
+                            
+            # Try to create the log file if it doesn't exist
+            with open(log_filename, "r", encoding="utf-8") as f:
+                content = f.read()
+        except Exception as e:
+            save_to_log("r", "Error reading log file:")
+        
+        # Update the log text widget
+        self.log_text.config(state=tk.NORMAL)
+        self.log_text.delete(1.0, tk.END)
+        self.log_text.insert(tk.END, content)
+        self.log_text.see(tk.END)
+        self.log_text.config(state=tk.DISABLED)

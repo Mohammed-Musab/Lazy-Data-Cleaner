@@ -5,7 +5,7 @@ from word2number import w2n
 import numpy as np
 from .read_and_write import load_file, save_file
 import contextlib, os
-from log import save_to_log
+from core.log import save_to_log
 from datetime import datetime
 
 # Get Current Time

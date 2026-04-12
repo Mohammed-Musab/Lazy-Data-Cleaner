@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 from .read_and_write import load_file, save_file
-from log import save_to_log
+from core.log import save_to_log
 
 # Standardization
 def standardization(data):
