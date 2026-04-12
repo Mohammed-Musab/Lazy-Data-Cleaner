@@ -61,7 +61,7 @@ def duplicate(data):
 
         # Store the initial count of rows
         initial_count = len(df)
-        df.drop_duplicates(drop=True, inplace=True)
+        df.drop_duplicates(inplace=True)
 
         # Inform user that duplicates have been removed
         if len(df) < initial_count:
