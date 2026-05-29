@@ -14,4 +14,8 @@ Project: Lazy Data Cleaner
 This project is designed to provide a user-friendly interface for cleaning and preprocessing data.
 Main goal is to provide high accuracy dataset cleaning for beginners and non-technical users,
 but also includes advanced features for experienced data scientists.
+
+Warning: Project name might change in the future,
+but the core functionality will remain focused on data cleaning and preprocessing.
+
 """

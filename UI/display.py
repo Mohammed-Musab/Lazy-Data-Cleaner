@@ -5,25 +5,101 @@ from pathlib import Path
 from time import sleep as s
 from tkinter import scrolledtext
 from core.log import save_to_log
+from config.config import config_save, config_load
 
 # Waiting Time For Progress Bar
-waiting_time = 0.25
+waiting_time = 0.2
 
 # Version Name
-version = "v0.4.6"
-
-"""
-
-Green     : #003609
-Red       : #3d0000
-
-"""
+version = "v0.4.7"
 
 # Lazy Data Cleaner Class
 class LazyDataCleaner():
 
+    # Get Current Settings
+    def get_current_settings(self):
+        return {
+            "preset": self.preset,
+            "mean": self.mean,
+            "median": self.median,
+            "mode": self.mode,
+            "duplicates": self.duplicates,
+            "outlier": self.outlier,
+            "standardizations": self.standardizations,
+            "force_csv": self.force_csv,
+            "missing_threshold": self.missing_threshold,
+            "outlier_threshold": self.outlier_threshold,
+            "theme": self.current_theme,
+        }
+
+    # Apply Settings
+    def apply_settings(self, settings):
+
+        # Update settings with loaded values, using current values as defaults
+        self.preset = settings.get("preset", self.preset)
+        self.mean = settings.get("mean", self.mean)
+        self.median = settings.get("median", self.median)
+        self.mode = settings.get("mode", self.mode)
+        self.duplicates = settings.get("duplicates", self.duplicates)
+        self.outlier = settings.get("outlier", self.outlier)
+        self.standardizations = settings.get("standardizations", self.standardizations)
+        self.force_csv = settings.get("force_csv", self.force_csv)
+        self.missing_threshold = settings.get("missing_threshold", self.missing_threshold)
+        self.outlier_threshold = settings.get("outlier_threshold", self.outlier_threshold)
+
+        # Apply Theme
+        theme = settings.get("theme", self.current_theme)
+        if self.current_theme != theme:
+            self.current_theme = theme
+            self.theme_button.config(text="Dark" if theme == "light" else "Light")
+            self.apply_theme()
+
+        # Update Sliders
+        self.threshold_slider.set(self.missing_threshold)
+        self.outlier_threshold_var.set(int(self.outlier_threshold))
+        
+        # Update Toggle Buttons
+        toggle_pairs = [
+            (self.mean,               self.customize_button_mean),
+            (self.median,             self.customize_button_median),
+            (self.mode,              self.customize_button_mode),
+            (self.duplicates,         self.customize_button_duplicates),
+            (self.outlier,            self.customize_button_outlier),
+            (self.standardizations,    self.customize_button_standardization),
+            (self.force_csv,          self.force_csv_button),
+        ]
+
+        # Update Toggle Buttons Colors
+        for value, button in toggle_pairs:
+            button.config(bg=self.theme("green") if value else self.theme("red"))
+
+        # Update Preset Text
+        preset_texts = {
+            1: "Default Settings Have Been Selected",
+            2: "AI Settings Have Been Selected",
+            3: "Business Settings Have Been Selected",
+            4: "Streaming Settings Have Been Selected",
+            5: "Custom Settings Have Been Selected",
+        }
+        self.settings_label_output.config(text=preset_texts.get(self.preset, ""))
+        self.root.update()
+
+    # Save Current Settings
+    def save_current_settings(self):
+        settings = self.get_current_settings()
+        config_save(settings)
+
+    # Load Saved Settings
+    def load_saved_settings(self):
+        settings = config_load()
+        if settings:
+            self.apply_settings(settings)
+
     # Init Function
     def __init__(self, root):
+
+        # Initialize log viewer state
+        self.last_log_size = 0
 
         # Importing Libraries
         from datetime import datetime
@@ -37,13 +113,16 @@ class LazyDataCleaner():
         # Main Root
         self.root = root
 
+        # Current Theme
+        self.current_theme = "light"
+
         # Create the main window
-        self.root.title(f"Lazy Data Cleaner - {version}")
+        self.root.title(f"Lazy Data Cleaner")
 
         # Window size and properties
         self.root.geometry("920x500")
         self.root.resizable(False, False)
-        self.root.configure(bg="light grey")
+        self.root.configure(bg=self.theme("bg"))
 
         # Main frame - center
         self.mainframe = tk.Frame(root)
@@ -72,11 +151,141 @@ class LazyDataCleaner():
         self.missing_threshold = 2.5
         self.outlier_threshold = 3
 
+        self.theme_button = tk.Button(
+            self.root,
+            text="Dark" if self.current_theme == "light" else "Light",
+            font=("Arial", 10, "bold"),
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
+            bd=0,
+            command=self.toggle_theme
+        )
+        self.theme_button.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
+
         # Create all widgets
         self.create_widgets()
 
+        # Load saved settings
+        self.load_saved_settings()
+
         # Main Screen
         self.main_screen()
+
+    # Theme function 
+    def theme(self, color):
+        
+        # Define color codes for light
+        if self.current_theme == "light":
+
+            colors = {
+                "red"           : "#E74C3C",
+                "green"         : "#2ECC71",
+                "blue"          : "#005A8F",
+                "gray"          : "#34495E",
+                "darker gray"   : "#2C3E50",
+                "white"         : "#F9FAFB",
+                "bg"            : "light grey",
+                "text"          : "#FFFFFF"
+            }
+
+        # Define color codes for dark
+        else:
+            
+            colors = {
+                "red"           : "#EF4444",
+                "green"         : "#22C55E",
+                "blue"          : "#3B82F6",
+                "gray"          : "#475569",
+                "darker gray"   : "#1E293B",
+                "white"         : "#FFFFFF",
+                "bg"            : "#0F172A",
+                "text"          : "#DDDDDD"
+            }   
+        
+        if color in colors:
+            return colors.get(color)
+        
+        else:
+            # Log the invalid color request and return a default color (magenta) to indicate an error
+            save_to_log("r", f"Invalid color '{color}' requested in theme function.")
+            return "#FF00FF"  # Return magenta for invalid color requests
+        
+
+    # Apply Theme
+    def apply_theme(self):
+        
+        # Update background colors
+        self.root.configure(bg=self.theme("bg"))
+        self.mainframe.configure(bg=self.theme("bg"))
+
+        # List of widgets to update with their corresponding background and foreground color keys
+        widgets = [
+            (self.theme_button, "gray", "text"),
+            (self.output_label, "gray", "text"),
+            (self.version_label, "gray", "text"),
+            (self.run_button, "green", "text"),
+            (self.restart_button, "blue", "text"),
+            (self.exit_button, "red", "text"),
+            (self.settings_button, "gray", "text"),
+            (self.return_button, "gray", "text"),
+            (self.settings_label_output, "gray", "text"),
+            (self.settings_button_default, "blue", "text"),
+            (self.settings_button_AI, "blue", "text"),
+            (self.settings_button_business, "blue", "text"),
+            (self.settings_button_streaming, "blue", "text"),
+            (self.settings_button_custom, "blue", "text"),
+            (self.customize_button_mean, "red", "text"),
+            (self.customize_button_median, "red", "text"),
+            (self.customize_button_mode, "red", "text"),
+            (self.customize_button_duplicates, "red", "text"),
+            (self.customize_button_outlier, "red", "text"),
+            (self.customize_button_standardization, "red", "text"),
+            (self.return_customize_button, "gray", "text"),
+            (self.force_csv_button, "red", "text"),
+            (self.upload_file_button, "gray", "text"),
+        ]
+
+        # Update each widget's colors if it exists
+        for widget, bg_key, fg_key in widgets:
+            if widget and widget.winfo_exists():
+                widget.configure(bg=self.theme(bg_key), fg=self.theme(fg_key))
+
+        # Update sliders
+        for slider in [self.threshold_slider, self.outlier_threshold_slider]:
+            if slider and slider.winfo_exists():
+                slider.configure(
+                    bg=self.theme("darker gray"),
+                    fg=self.theme("text"),
+                    troughcolor=self.theme("darker gray")
+                )
+
+        # Update loading label if it exists
+        if hasattr(self, 'loading_label') and self.loading_label.winfo_exists():
+            self.loading_label.configure(bg=self.theme("bg"), fg=self.theme("text"))
+        if hasattr(self, 'loadingframe') and self.loadingframe.winfo_exists():
+            self.loadingframe.configure(bg=self.theme("bg"))
+        if hasattr(self, 'text_frame') and self.text_frame.winfo_exists():
+            self.text_frame.configure(bg=self.theme("bg"))
+        if hasattr(self, 'log_viewer_window') and self.log_viewer_window and self.log_viewer_window.winfo_exists():
+            self.log_viewer_window.configure(bg=self.theme("bg"))
+        if hasattr(self, 'log_text') and self.log_text.winfo_exists():
+            self.log_text.configure(
+                bg=self.theme("darker gray"),
+                fg=self.theme("text"),
+                insertbackground=self.theme("text"),
+            )
+
+        self.root.update()
+
+    # Toggle Theme
+    def toggle_theme(self):
+        
+        # Toggle the theme between light and dark
+        self.current_theme = "dark" if self.current_theme == "light" else "light"
+        self.theme_button.config(text="Dark" if self.current_theme == "light" else "Light")
+        
+        # Apply the new theme to all widgets
+        self.apply_theme()
     
     # Create Widgets
     def create_widgets(self):
@@ -88,14 +297,14 @@ class LazyDataCleaner():
         button_settings_height  = 2
         button_customize_width  = 30
         button_customize_height = 2
-    
+
         # Label - Output
         self.output_label = tk.Label(
             self.mainframe,
             text="Process Finished!",
             font=("Arial", 15, "bold"),
-            bg="#2c3e50",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             wraplength=160,
             width=40,
             height=6,
@@ -107,8 +316,8 @@ class LazyDataCleaner():
             self.mainframe,
             text=version,
             font=("Arial", 20, "bold"),
-            bg="#2c3e50",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             width=20,
             height=2,
             bd=0
@@ -119,8 +328,8 @@ class LazyDataCleaner():
             self.mainframe,
             text=" RUN ",
             font=("Arial", 20, "bold"),
-            bg="#2ecc71",
-            fg="white",
+            bg=self.theme("green"),
+            fg=self.theme("text"),
             width=20,
             height=2,
             command=self.run,
@@ -134,8 +343,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Restart the Program",
             font=("Arial", 15, "bold"),
-            bg="#3498db",
-            fg="white",
+            bg=self.theme("blue"),
+            fg=self.theme("text"),
             width=button_width,
             height=button_height,
             command=self.rerun,
@@ -149,8 +358,8 @@ class LazyDataCleaner():
             self.mainframe,
             text=" Leave the Program ",
             font=("Arial", 15, "bold"),
-            bg="#e74c3c",
-            fg="white",
+            bg=self.theme("red"),
+            fg=self.theme("text"),
             width=button_width,
             height=button_height,
             command=self.exit_function,
@@ -164,8 +373,8 @@ class LazyDataCleaner():
             self.root,
             text="Settings",
             font=("Arial", 10, "bold"),
-            bg="#95a5a6",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             bd=0,
             highlightthickness=0,
             relief="flat",
@@ -177,8 +386,8 @@ class LazyDataCleaner():
             self.root,
             text="Return",
             font=("Arial", 10, "bold"),
-            bg="#95a5a6",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             bd=0,
             highlightthickness=0,
             relief="flat",
@@ -190,8 +399,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Default Settings Have Been Selected",
             font=("Arial", 15, "bold"),
-            bg="#2c3e50",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             wraplength=160,
             width=40,
             height=6,
@@ -203,8 +412,8 @@ class LazyDataCleaner():
             self.mainframe,
             text=" Default ",
             font=("Arial", 15, "bold"),
-            bg="#005a8f",
-            fg="white",
+            bg=self.theme("blue"),
+            fg=self.theme("text"),
             width=button_settings_width,
             height=button_settings_height,
             command=lambda: self.preset_selection(1, "Default Settings Have Been Selected"),
@@ -218,8 +427,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="   AI    ",
             font=("Arial", 15, "bold"),
-            bg="#005a8f",
-            fg="white",
+            bg=self.theme("blue"),
+            fg=self.theme("text"),
             width=button_settings_width,
             height=button_settings_height,
             command=lambda: self.preset_selection(2, "AI Settings Have Been Selected"),
@@ -233,8 +442,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Business",
             font=("Arial", 15, "bold"),
-            bg="#005a8f",
-            fg="white",
+            bg=self.theme("blue"),
+            fg=self.theme("text"),
             width=button_settings_width,
             height=button_settings_height,
             command=lambda: self.preset_selection(3, "Business Settings Have Been Selected"),
@@ -248,8 +457,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Streaming",
             font=("Arial", 15, "bold"),
-            bg="#005a8f",
-            fg="white",
+            bg=self.theme("blue"),
+            fg=self.theme("text"),
             width=button_settings_width,
             height=button_settings_height,
             command=lambda: self.preset_selection(4, "Streaming Settings Have Been Selected"),
@@ -263,8 +472,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Customize",
             font=("Arial", 15, "bold"),
-            bg="#005a8f",
-            fg="white",
+            bg=self.theme("blue"),
+            fg=self.theme("text"),
             width=button_settings_width,
             height=button_settings_height,
             command=self.customize,
@@ -278,8 +487,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Fill in using the Mean",
             font=("Arial", 15, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg= self.theme("red"),
+            fg=self.theme("text"),
             width=button_customize_width,
             height=button_customize_height,
             command=lambda: self.customizable_selection(1),
@@ -293,8 +502,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Fill in using the Median",
             font=("Arial", 15, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg= self.theme("red"),
+            fg=self.theme("text"),
             width=button_customize_width,
             height=button_customize_height,
             command=lambda: self.customizable_selection(2),
@@ -308,8 +517,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Fill in using the Mode",
             font=("Arial", 15, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg= self.theme("red"),
+            fg=self.theme("text"),
             width=button_customize_width,
             height=button_customize_height,
             command=lambda: self.customizable_selection(3),
@@ -323,8 +532,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Remove Duplicates",
             font=("Arial", 15, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg= self.theme("red"),
+            fg=self.theme("text"),
             width=button_customize_width,
             height=button_customize_height,
             command=lambda: self.customizable_selection(4),
@@ -338,8 +547,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Remove Outlier",
             font=("Arial", 15, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg= self.theme("red"),
+            fg=self.theme("text"),
             width=button_customize_width,
             height=button_customize_height,
             command=lambda: self.customizable_selection(5),
@@ -353,8 +562,8 @@ class LazyDataCleaner():
             self.mainframe,
             text="Apply Standardization",
             font=("Arial", 15, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg= self.theme("red"),
+            fg=self.theme("text"),
             width=button_customize_width,
             height=button_customize_height,
             command=lambda: self.customizable_selection(6),
@@ -368,8 +577,8 @@ class LazyDataCleaner():
             self.root,
             text="Return",
             font=("Arial", 10, "bold"),
-            bg="#95a5a6",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             bd=0,
             highlightthickness=0,
             relief="flat",
@@ -381,8 +590,8 @@ class LazyDataCleaner():
             self.root,
             text="Force csv save as files",
             font=("Arial", 10, "bold"),
-            bg="#3d0000",
-            fg="white",
+            bg=self.theme("red"),
+            fg=self.theme("text"),
             bd=0,
             highlightthickness=0,
             relief="flat",
@@ -395,8 +604,8 @@ class LazyDataCleaner():
             self.root,
             text="Upload File",
             font=("Arial", 10, "bold"),
-            bg="#95a5a6",
-            fg="white",
+            bg=self.theme("gray"),
+            fg=self.theme("text"),
             bd=0,
             highlightthickness=0,
             relief="flat",
@@ -412,33 +621,36 @@ class LazyDataCleaner():
             resolution=0.1,
             label="Missing Threshold (%)",
             length=300,
-            bg="#2c3e50",
-            fg="white",
-            troughcolor="#34495e",
-            activebackground="#005a8f",
+            bg=self.theme("darker gray"),
+            fg=self.theme("text"),
+            troughcolor=self.theme("darker gray"),
+            activebackground=self.theme("blue"),
             highlightthickness=0,
             bd=0
         )
 
         # Bar - Preset Selection - Outlier Threshold
+        self.outlier_threshold_var = tk.IntVar()
         self.outlier_threshold_slider = tk.Scale(
             self.mainframe,
             from_=1,
             to=10,
             orient="horizontal",
-            resolution=0.1,
+            resolution=1,
             label="Outlier Threshold",
             length=300,
-            bg="#2c3e50",
-            fg="white",
-            troughcolor="#34495e",
-            activebackground="#005a8f",
+            variable=self.outlier_threshold_var,
+            digits=0,
+            bg=self.theme("darker gray"),
+            fg=self.theme("text"),
+            troughcolor=self.theme("darker gray"),
+            activebackground=self.theme("blue"),
             highlightthickness=0,
             bd=0
         )
         
         self.threshold_slider.set(self.missing_threshold)
-        self.outlier_threshold_slider.set(self.outlier_threshold)
+        self.outlier_threshold_var.set(self.outlier_threshold)
 
     # Clear Frame
     def clear_frame(self):
@@ -455,7 +667,10 @@ class LazyDataCleaner():
         self.force_csv_button.place_forget()
 
         # Restore background
-        self.mainframe.configure(bg="light grey")
+        self.mainframe.configure(bg=self.theme("bg"))
+
+        # Check colors
+        self.apply_theme()
 
     # Main Screen
     def main_screen(self):
@@ -468,6 +683,7 @@ class LazyDataCleaner():
         self.version_label.grid(row=2, sticky="ew")
         self.settings_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
         self.upload_file_button.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
+        self.apply_theme()
 
     # Preset Selection
     def preset_selection(self, value, text): 
@@ -477,6 +693,9 @@ class LazyDataCleaner():
 
         # Add The New Text
         self.settings_label_output.config(text=text)
+
+        # Save current settings
+        self.save_current_settings()
 
         # Update The Screen
         self.root.update()
@@ -515,7 +734,7 @@ class LazyDataCleaner():
             # Toggle the value and update the button color
             new_value = 1 - current_value
             setattr(self, attribute_name, new_value)
-            button.config(bg="#003609" if new_value == 1 else "#3d0000")
+            button.config(bg=self.theme("green") if new_value == 1 else self.theme("red"))
         
         # If the value is not 0 or 1, log an error message
         else:
@@ -541,7 +760,7 @@ class LazyDataCleaner():
 
         # Define Loading Frame
         self.clear_frame()
-        self.loadingframe = tk.Frame(self.mainframe, bg="light grey")
+        self.loadingframe = tk.Frame(self.mainframe, bg=self.theme("bg"))
         self.loadingframe.grid()
 
         # Progress Bar
@@ -558,9 +777,10 @@ class LazyDataCleaner():
         # Loading Label
         self.loading_label = tk.Label(
         self.loadingframe,
-        text="Processing...",
-        font=("Arial", 20, "bold"),
-        bg="light grey"
+            text="Processing...",
+            font=("Arial", 20, "bold"),
+            bg=self.theme("bg"),
+            fg=self.theme("text")
         )
 
         # Display 
@@ -582,6 +802,9 @@ class LazyDataCleaner():
     
     # Exit Function
     def exit_function(self):
+
+        # Save Current Settings
+        self.save_current_settings()
 
         # Exit The Program
         self.root.destroy()
@@ -646,7 +869,7 @@ class LazyDataCleaner():
 
         # Get Threshold Values
         self.missing_threshold = self.threshold_slider.get()
-        self.outlier_threshold = self.outlier_threshold_slider.get()
+        self.outlier_threshold = self.outlier_threshold_var.get()
 
         # Initialize step and current for progress tracking
         self.step    = 1
@@ -673,6 +896,7 @@ class LazyDataCleaner():
                 self.loading_label.config(text=f"{information}... ({self.current}/{self.step})")
                 progress = int((self.current / self.step) * 100)
                 self.update_progress(progress)
+                self.root.update()
                 s(waiting_time)
 
         # Processing files
@@ -758,7 +982,7 @@ class LazyDataCleaner():
         self.restart_button.grid(row=2, sticky="ew")
         self.exit_button.grid(row=3, sticky="ew")
         self.settings_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
-        self.output_label.config(text="The Program Finish Sucessfully!", fg="green")
+        self.output_label.config(text="The Program Finish Sucessfully!", fg=self.theme("text"))
 
         # Update The Screen
         self.root.update()
@@ -802,12 +1026,12 @@ class LazyDataCleaner():
         self.log_viewer_window.protocol("WM_DELETE_WINDOW", self.close_log_viewer)
 
         # Text widget with scrollbar
-        text_frame = tk.Frame(self.log_viewer_window)
-        text_frame.pack(fill=tk.BOTH, expand=True)
+        self.text_frame = tk.Frame(self.log_viewer_window)
+        self.text_frame.pack(fill=tk.BOTH, expand=True)
 
         # Create a scrolled text widget for displaying logs
         self.log_text = scrolledtext.ScrolledText(
-            text_frame,
+            self.text_frame,
             wrap=tk.WORD,
             font=("Consolas", 10),
             state=tk.DISABLED
@@ -815,6 +1039,7 @@ class LazyDataCleaner():
 
         # Pack the text widget to fill the window
         self.log_text.pack(fill=tk.BOTH, expand=True)
+        self.apply_theme()
 
         # Load initial content
         self.refresh_log_viewer()
@@ -855,12 +1080,32 @@ class LazyDataCleaner():
             # Try to create the log file if it doesn't exist
             with open(log_filename, "r", encoding="utf-8") as f:
                 content = f.read()
+        
+        # If error reading the log file, log the error and set content to an error message
         except Exception as e:
             save_to_log("r", "Error reading log file:")
-        
-        # Update the log text widget
-        self.log_text.config(state=tk.NORMAL)
-        self.log_text.delete(1.0, tk.END)
-        self.log_text.insert(tk.END, content)
-        self.log_text.see(tk.END)
-        self.log_text.config(state=tk.DISABLED)
+            content = ""
+
+
+        # Check if the scrollbar is at the bottom before updating the log content
+        bottom_visible = self.log_text.yview()[1] > 0.9
+
+        # Get the new content since the last update
+        new_content = content[self.last_log_size:]
+
+        # If there is new content, update the log viewer       
+        if new_content:
+
+            # Enable the text widget to update the content
+            self.log_text.config(state=tk.NORMAL)
+            self.log_text.insert(tk.END, new_content)
+
+            # Scroll to the bottom if the user was already at the bottom
+            if bottom_visible:
+                self.log_text.see(tk.END)
+
+            # Disable the text widget to prevent user edits
+            self.log_text.config(state=tk.DISABLED)
+
+            # Update last size
+            self.last_log_size = len(content)

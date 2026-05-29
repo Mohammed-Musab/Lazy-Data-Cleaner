@@ -29,7 +29,8 @@ def safe_w2n(series, cap=1000):
 
     # Check if the number of unique values >= cap
     if len(unique_values) >= cap:
-        save_to_log("y", f"Warning: Too many unique values, {len(unique_values)}.\nSkipping word to number conversion.")
+        save_to_log("r", f"Too many unique values, {len(unique_values)}.")
+        save_to_log("r", f"Skipping word to number conversion to avoid crash.")
         return series
     
     # Cache for converted values
@@ -75,7 +76,7 @@ def format_string_values(x):
 
     # Replacing space with "_" if it a string
     if isinstance(x, str) and not pd.isna(x):
-        return x.replace(" ", "_").replace("-", "_")
+        return x.replace("_", " ").replace("-", " ")
 
     # Return the lower text
     return x
@@ -89,8 +90,8 @@ def merging(df):
         .astype(str)
         .str.strip()
         .str.lower()
-        .str.replace(r'[\s\-]+', '_', regex=True)
-        .str.replace(r'_+', '_', regex=True)
+        .str.replace(r'[\s\-]+', ' ', regex=True)
+        .str.replace(r'_+', ' ', regex=True)
         .str.strip('_')
     )
 
@@ -188,8 +189,8 @@ def process_files(force_change_csv=False):
                         .astype(str)
                         .str.strip()
                         .str.lower()
-                        .str.replace(r'[^\w]+', '_', regex=True)
-                        .str.replace(r'_+', '_', regex=True)
+                        .str.replace(r'[^\w]+', ' ', regex=True)
+                        .str.replace(r'_+', ' ', regex=True)
                         .str.strip('_')
                     )
             
@@ -207,7 +208,7 @@ def process_files(force_change_csv=False):
             for column in df.columns:
                 if df[column].dtype == object and not is_numeric_like(df[column]):
                     df[column] = df[column].apply(format_string_values)
-                    df[column] = df[column].str.replace(r'[\s\-]+', '_', regex=True)
+                    df[column] = df[column].str.replace(r'[\s\-]+', ' ', regex=True)
             
             # Merging columns
             df = merging(df)

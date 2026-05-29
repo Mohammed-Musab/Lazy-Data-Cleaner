@@ -13,13 +13,16 @@ def get_time():
 def load_file(path, **kwargs):
     # Get the extension
     extension = os.path.splitext(path)[1].lower()
+    save_to_log("g", "Getting the {.extension} of the file.")
 
     # If extension is csv read it
     if extension == ".csv":
+        save_to_log("g", "Reading the {.csv} file.")
         return pd.read_csv(path, index_col=None, **kwargs)
 
     # If extension is xlsx or xls read it
     elif extension in [".xlsx", ".xls"]:
+        save_to_log("g", "Reading the {.xlsx}/{.xls} file.")
         return pd.read_excel(path, index_col=None, **kwargs)
 
     # Else return unspported file type issue
@@ -31,6 +34,7 @@ def save_file(df, filename, force_csv=False, **kwargs):
     # Get the orginial path
     data_directory = Path(__file__).resolve().parents[1] / "Data"
     data_directory.mkdir(parents=True, exist_ok=True)
+    save_to_log("g", "Getting the directory.")
     
     # If user want to force to be csv
     if force_csv:
@@ -38,16 +42,20 @@ def save_file(df, filename, force_csv=False, **kwargs):
     
     # Output path
     output_path = data_directory / filename
+    save_to_log("g", "Getting the output path.")
     
     # Get the extension
     extension = output_path.suffix.lower()
+    save_to_log("g", "Getting the {.extension} of the file.")
 
     # If extension is csv save it
     if extension == ".csv":
+        save_to_log("g", "Saving the file as {.csv} file.")
         df.to_csv(output_path, index=False, **kwargs)
 
     # If extension is xlsx or xls save it
     elif extension in [".xlsx", ".xls"]:
+        save_to_log("g", "Saving the file as {.xlsx} file.")
         df.to_excel(output_path, index=False, **kwargs)
     
     # Else return unspported file type issue

@@ -1,2 +1,11 @@
 Here where logs get saved,
-You can safely delete this file
+You can safely delete this file!
+This include the folder; however,
+when running the program it will get created!
+
+Don't trust me? Try it yourself!
+
+
+Note, you know the TF2 `cocunt.png`?
+The one if you deleted it won't start game,
+I will be making my own, but not sure when.

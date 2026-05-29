@@ -1,5 +1,6 @@
 # Import Libraries
 from datetime import datetime
+from tkinter import messagebox
 import os
 
 # Time Functions
@@ -42,7 +43,7 @@ def save_to_log(color="", message=""):
 
     color = color.lower()
     current_message = ""
-
+    
     # Print the message with the corresponding color based on the indicator - will be replaced in future
     if color == "g":
         current_message = (f"[{get_time()}] Success: {message}")
@@ -54,5 +55,11 @@ def save_to_log(color="", message=""):
         current_message = (f"[{get_time()}] Info: {message}")
 
     # Save the message to a log file with the current time as the name
-    with open(f"{log_filename}", "a") as log_file:
-        log_file.write(current_message + "\n")
+    try:
+        with open(f"{log_filename}", "a") as log_file:
+                log_file.write(current_message + "\n")
+    except Exception as e:
+        try:
+            messagebox.showerror("Error", f"Error occurred while writing to log file: {e}")
+        except Exception:
+            print(f"Error occurred while writing to log file: {e}")

@@ -9,9 +9,9 @@ def upload_file():
     file_path = filedialog.askopenfilename(
         title="Select a file",
         filetypes=[
-            ("Supported files", "*.txt *.csv *.xlsx"),
-            ("Text files", "*.txt"),
-            ("CSV files", "*.csv"),
+            ("Supported files", "*.csv *.xls *.xlsx"),
+            ("Text files", "*.csv"),
+            ("CSV files", "*.xls"),
             ("Excel files", "*.xlsx")
         ]
     )
