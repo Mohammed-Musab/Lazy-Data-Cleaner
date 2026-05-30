@@ -1,12 +1,12 @@
-order_id,customer_name,age,date,amount_($),currency,country,product
-1.0,john_doe,27.0,2024_01_05,100.0,usd,brunei,widget_a
-2.0,jane_doe,25.0,05_01_2024,200.0,,brn,widget_b
-3.0,john_doe,27.0,2024_01_07,,usd,brunei,widget_a
-4.0,ali_bin_abu,,2024_13_01,300.0,usd,brunei,widget_c
-5.0,jane_doe,25.0,2024_01_09,,usd,brunei_darussalam,widget_b
-5.0,jane_doe,25.0,2024_01_09,200.0,usd,,widget_b
-6.0,bob_lee,40.0,01_10_24,,usd,malaysia,widget_d
-7.0,mary_sue,,2024_01_11,150.0,usd,my,widget_e
-8.0,john_doe,27.0,2024_01_12,100.0,usd,brunei,widget_a
-9.0,john_doe,27.0,2024_01_12,,usd,brunei,widget_a
-10.0,ali_bin_abu,35.0,2024_31_01,500.0,usd,brunei,widget_f
+order id,customer name,age,date,amount ($),currency,country,product
+1.0,john doe,27.0,2024 01 05,100.0,usd,brunei,widget a
+2.0,jane doe,25.0,05 01 2024,200.0,,brn,widget b
+3.0,john doe,27.0,2024 01 07,,usd,brunei,widget a
+4.0,ali bin abu,,2024 13 01,300.0,usd,brunei,widget c
+5.0,jane doe,25.0,2024 01 09,,usd,brunei darussalam,widget b
+5.0,jane doe,25.0,2024 01 09,200.0,usd,,widget b
+6.0,bob lee,40.0,01 10 24,,usd,malaysia,widget d
+7.0,mary sue,,2024 01 11,150.0,usd,my,widget e
+8.0,john doe,27.0,2024 01 12,100.0,usd,brunei,widget a
+9.0,john doe,27.0,2024 01 12,,usd,brunei,widget a
+10.0,ali bin abu,35.0,2024 31 01,500.0,usd,brunei,widget f

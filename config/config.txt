@@ -1,0 +1,13 @@
+{
+    "preset": 5,
+    "mean": 0,
+    "median": 1,
+    "mode": 1,
+    "duplicates": 0,
+    "outlier": 1,
+    "standardizations": 1,
+    "force_csv": 1,
+    "missing_threshold": 2.5,
+    "outlier_threshold": 3,
+    "theme": "dark"
+}

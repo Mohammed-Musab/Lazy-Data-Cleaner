@@ -7,8 +7,8 @@ def default(data):
 
 # AI preset
 def AI(data):
-    fill_median(True, 30, data)
-    fill_mode(True, 30, data)
+    fill_median(False, 30, data)
+    fill_mode(False, 30, data)
     outlier(data)
     duplicate(data)
     standardization(data)
@@ -20,6 +20,6 @@ def business(data):
 
 # Streaming preset
 def streaming(data):
-    fill_mode(True, 50, data)
+    fill_mode(False, 50, data)
     outlier(data)
     duplicate(data)
