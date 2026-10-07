@@ -32,6 +32,9 @@ Install dependencies using:
 py -m pip install -r requirements.txt
 ```
 
+# Debugging
+
+A manual for diagnosing errors and what they mean is in [debug.md](debug.md).
 
 # Credits
 
