@@ -3,14 +3,15 @@ try:
     import tkinter as tk
 except ImportError:
     # Print Error
-    print("Failed To Load Library [1]")
+    print("Failed To Load Libraries [1, 1]")
+    exit()
 
-# Run
 if __name__ == "__main__":    
     # Create Window
     root = tk.Tk()
     
-    #app = LazyDataCleaner(root)
+    ## Working on display, for now it offline!
+    # app = LazyDataCleaner(root)
     
     # Main Loop
     root.mainloop()
